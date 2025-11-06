@@ -1,7 +1,9 @@
 package compumart.compumart.model;
 
+import org.bson.types.ObjectId;
+
 public class User {
-    private int id;
+    private ObjectId id;
     private String email;
     private String password;
     private String firstName;
@@ -12,8 +14,7 @@ public class User {
 
     public User() {}
 
-    public User(int id, String email, String firstName, String lastName, String role) {
-        this.id = id;
+    public User(String email, String firstName, String lastName, String role) {
         this.email = email;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -21,8 +22,8 @@ public class User {
     }
 
     // Getters and setters
-    public int getId() { return id; }
-    public void setId(int id) { this.id = id; }
+    public ObjectId getId() { return id; }
+    public void setId(ObjectId id) { this.id = id; }
 
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }

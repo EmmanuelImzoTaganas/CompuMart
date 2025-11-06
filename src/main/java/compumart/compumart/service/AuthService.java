@@ -1,117 +1,190 @@
 package compumart.compumart.service;
 
 import compumart.compumart.model.User;
+import compumart.compumart.model.MongoConnection;
 import compumart.compumart.SessionManager;
-import java.sql.*;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
+import org.bson.Document;
+import org.bson.types.ObjectId;
+
+import static com.mongodb.client.model.Filters.*;
 
 public class AuthService {
-    private DatabaseService dbService = DatabaseService.getInstance();
+    private MongoDatabase database;
+    private MongoCollection<Document> usersCollection;
+
+    public AuthService() {
+        this.database = MongoConnection.getDatabase();
+        if (database != null) {
+            this.usersCollection = database.getCollection("users");
+            System.out.println("✅ MongoDB AuthService initialized");
+            initializeAdminUser();
+        } else {
+            System.err.println("❌ Failed to initialize MongoDB AuthService");
+        }
+    }
 
     public User login(String email, String password) {
-        String sql = "SELECT * FROM users WHERE email = ? AND password = ?";
+        if (usersCollection == null) {
+            System.err.println("❌ MongoDB collection not available");
+            return null;
+        }
 
-        try (Connection conn = dbService.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try {
+            System.out.println("🔐 Attempting login for: " + email);
 
-            pstmt.setString(1, email);
-            pstmt.setString(2, password);
+            Document userDoc = usersCollection.find(
+                    and(eq("email", email), eq("password", password))
+            ).first();
 
-            System.out.println("Executing login query for: " + email);
-
-            ResultSet rs = pstmt.executeQuery();
-            if (rs.next()) {
-                User user = new User();
-                user.setId(rs.getInt("id"));
-                user.setEmail(rs.getString("email"));
-                user.setFirstName(rs.getString("first_name"));
-                user.setLastName(rs.getString("last_name"));
-                user.setRole(rs.getString("role"));
+            if (userDoc != null) {
+                User user = documentToUser(userDoc);
 
                 // Set session
                 SessionManager.getInstance().setCurrentUser(user);
 
-                System.out.println("Login successful for: " + user.getEmail());
+                System.out.println("✅ Login successful for: " + user.getEmail());
                 return user;
             } else {
-                System.out.println("Login failed - no user found with these credentials");
+                System.out.println("❌ Login failed - invalid credentials for: " + email);
+                return null;
             }
-        } catch (SQLException e) {
-            System.err.println("Login error: " + e.getMessage());
+        } catch (Exception e) {
+            System.err.println("❌ Login error: " + e.getMessage());
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
 
     public boolean register(User user, String password) {
-        String sql = "INSERT INTO users (email, password, first_name, last_name, role) VALUES (?, ?, ?, ?, ?)";
+        if (usersCollection == null) {
+            System.err.println("❌ MongoDB collection not available");
+            return false;
+        }
 
-        try (Connection conn = dbService.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+        try {
+            // Check if email already exists
+            if (emailExists(user.getEmail())) {
+                System.out.println("❌ Email already exists: " + user.getEmail());
+                return false;
+            }
 
-            pstmt.setString(1, user.getEmail());
-            pstmt.setString(2, password);
-            pstmt.setString(3, user.getFirstName());
-            pstmt.setString(4, user.getLastName());
-            pstmt.setString(5, "customer");
+            Document userDoc = new Document()
+                    .append("email", user.getEmail())
+                    .append("password", password)
+                    .append("firstName", user.getFirstName())
+                    .append("lastName", user.getLastName())
+                    .append("role", "customer")
+                    .append("createdAt", new java.util.Date());
 
-            System.out.println("Attempting to register user: " + user.getEmail());
-            System.out.println("First name: " + user.getFirstName() + ", Last name: " + user.getLastName());
+            usersCollection.insertOne(userDoc);
+            System.out.println("✅ User registered successfully: " + user.getEmail());
+            return true;
 
-            int rowsAffected = pstmt.executeUpdate();
-            System.out.println("Registration query executed. Rows affected: " + rowsAffected);
-
-            return rowsAffected > 0;
-
-        } catch (SQLException e) {
-            System.err.println("Registration error: " + e.getMessage());
-            System.err.println("SQL State: " + e.getSQLState());
-            System.err.println("Error Code: " + e.getErrorCode());
+        } catch (Exception e) {
+            System.err.println("❌ Registration error: " + e.getMessage());
             e.printStackTrace();
             return false;
         }
     }
 
     public boolean emailExists(String email) {
-        String sql = "SELECT 1 FROM users WHERE email = ?";
+        if (usersCollection == null) {
+            System.err.println("❌ MongoDB collection not available");
+            return false;
+        }
 
-        try (Connection conn = dbService.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-
-            pstmt.setString(1, email);
-            ResultSet rs = pstmt.executeQuery();
-            boolean exists = rs.next();
-            System.out.println("Email " + email + " exists: " + exists);
+        try {
+            long count = usersCollection.countDocuments(eq("email", email));
+            boolean exists = count > 0;
+            System.out.println("📧 Email exists check for " + email + ": " + exists);
             return exists;
-
-        } catch (SQLException e) {
-            System.err.println("Email check error: " + e.getMessage());
-            e.printStackTrace();
+        } catch (Exception e) {
+            System.err.println("❌ Email check error: " + e.getMessage());
             return false;
         }
     }
 
-    // Test database connection
+    private User documentToUser(Document doc) {
+        User user = new User();
+        user.setId(doc.getObjectId("_id"));
+        user.setEmail(doc.getString("email"));
+        user.setFirstName(doc.getString("firstName"));
+        user.setLastName(doc.getString("lastName"));
+        user.setRole(doc.getString("role"));
+        user.setPassword(doc.getString("password"));
+
+        // Optional fields
+        if (doc.containsKey("phone")) {
+            user.setPhone(doc.getString("phone"));
+        }
+        if (doc.containsKey("address")) {
+            user.setAddress(doc.getString("address"));
+        }
+
+        return user;
+    }
+
+    private void initializeAdminUser() {
+        try {
+            // Check if admin user exists
+            long adminCount = usersCollection.countDocuments(
+                    and(eq("email", "admin@compumart.com"), eq("role", "admin"))
+            );
+
+            if (adminCount == 0) {
+                Document adminDoc = new Document()
+                        .append("email", "admin@compumart.com")
+                        .append("password", "admin123")
+                        .append("firstName", "System")
+                        .append("lastName", "Admin")
+                        .append("role", "admin")
+                        .append("createdAt", new java.util.Date());
+
+                usersCollection.insertOne(adminDoc);
+                System.out.println("✅ Admin user created: admin@compumart.com / admin123");
+            } else {
+                System.out.println("ℹ️ Admin user already exists");
+            }
+        } catch (Exception e) {
+            System.err.println("❌ Error initializing admin user: " + e.getMessage());
+        }
+    }
+
+    // Test MongoDB connection
     public void testConnection() {
-        try (Connection conn = dbService.getConnection()) {
-            System.out.println("✅ Database connection test: SUCCESS");
-            System.out.println("Database URL: " + conn.getMetaData().getURL());
-        } catch (SQLException e) {
-            System.err.println("❌ Database connection test: FAILED");
-            System.err.println("Error: " + e.getMessage());
+        try {
+            if (database != null) {
+                System.out.println("✅ MongoDB connection test: SUCCESS");
+                System.out.println("Database: " + database.getName());
+
+                // Test if collection exists and is accessible
+                long userCount = usersCollection.countDocuments();
+                System.out.println("Total users in database: " + userCount);
+            } else {
+                System.err.println("❌ MongoDB connection test: FAILED - No database connection");
+            }
+        } catch (Exception e) {
+            System.err.println("❌ MongoDB connection test: FAILED - " + e.getMessage());
             e.printStackTrace();
         }
     }
 
     // Check database health
     public boolean isDatabaseHealthy() {
-        try (Connection conn = dbService.getConnection();
-             Statement stmt = conn.createStatement()) {
-
-            ResultSet rs = stmt.executeQuery("SELECT 1");
-            System.out.println("✅ Database health check: PASSED");
-            return true;
-        } catch (SQLException e) {
-            System.err.println("❌ Database health check failed: " + e.getMessage());
+        try {
+            if (database != null) {
+                database.listCollectionNames().first(); // Simple operation to test connection
+                System.out.println("✅ MongoDB health check: PASSED");
+                return true;
+            } else {
+                System.err.println("❌ MongoDB health check: FAILED - No database connection");
+                return false;
+            }
+        } catch (Exception e) {
+            System.err.println("❌ MongoDB health check failed: " + e.getMessage());
             return false;
         }
     }
