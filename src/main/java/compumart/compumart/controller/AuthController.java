@@ -2,6 +2,8 @@ package compumart.compumart.controller;
 
 import compumart.compumart.model.User;
 import compumart.compumart.service.AuthService;
+import compumart.compumart.SceneManager;
+import compumart.compumart.SessionManager;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -33,6 +35,7 @@ public class AuthController {
 
     private AuthService authService;
     private Map<String, String> fxmlPaths;
+    private SceneManager sceneManager;
 
     public AuthController() {
         this.authService = new AuthService();
@@ -43,6 +46,12 @@ public class AuthController {
         fxmlPaths = new HashMap<>();
         fxmlPaths.put("login", "/compumart/compumart/view/auth/Login.fxml");
         fxmlPaths.put("register", "/compumart/compumart/view/auth/Register.fxml");
+        fxmlPaths.put("products", "/compumart/compumart/view/customer/Products.fxml");
+        fxmlPaths.put("adminDashboard", "/compumart/compumart/view/admin/AdminDashboard.fxml");
+    }
+
+    public void setSceneManager(SceneManager sceneManager) {
+        this.sceneManager = sceneManager;
     }
 
     @FXML
@@ -81,6 +90,7 @@ public class AuthController {
 
         User user = authService.login(email, password);
         if (user != null) {
+            // Login successful - show welcome message
             showAlert(Alert.AlertType.INFORMATION, "Success",
                     "Login successful! Welcome " + user.getFullName() +
                             "\n\nRole: " + (user.isAdmin() ? "Administrator" : "Customer"));
@@ -89,11 +99,31 @@ public class AuthController {
             loginEmailField.clear();
             loginPasswordField.clear();
 
+            // Redirect based on user role
+            redirectAfterLogin(user);
+
         } else {
             showAlert(Alert.AlertType.ERROR, "Error",
                     "Invalid email or password. Please try again.");
             loginPasswordField.clear();
             loginPasswordField.requestFocus();
+        }
+    }
+
+    private void redirectAfterLogin(User user) {
+        try {
+            if (user.isAdmin()) {
+                // Redirect to admin dashboard
+                switchToScene("adminDashboard");
+                System.out.println("Redirecting to Admin Dashboard for: " + user.getFullName());
+            } else {
+                // Redirect to customer products page
+                switchToScene("products");
+                System.out.println("Redirecting to Products page for: " + user.getFullName());
+            }
+        } catch (Exception e) {
+            System.err.println("Error during redirect: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -138,13 +168,6 @@ public class AuthController {
             showAlert(Alert.AlertType.ERROR, "Error", "Passwords do not match.");
             registerConfirmPasswordField.clear();
             registerConfirmPasswordField.requestFocus();
-            return;
-        }
-
-        // Check database health first
-        if (!authService.isDatabaseHealthy()) {
-            showAlert(Alert.AlertType.ERROR, "Database Error",
-                    "Cannot connect to database. Please try again later.");
             return;
         }
 
@@ -193,18 +216,12 @@ public class AuthController {
             switchToScene("login");
 
         } else {
-            // More specific error message
-            String errorMessage = "Registration failed. This could be due to:\n" +
-                    "• Database connection issue\n" +
-                    "• Email already exists\n" +
-                    "• Server problem\n\n" +
-                    "Please try again or contact support.";
-
-            showAlert(Alert.AlertType.ERROR, "Registration Failed", errorMessage);
-
-            // Debug: Try to check if email exists again to confirm
-            boolean emailStillExists = authService.emailExists(email);
-            System.out.println("Double-checking email existence after failed registration: " + emailStillExists);
+            showAlert(Alert.AlertType.ERROR, "Registration Failed",
+                    "Registration failed. This could be due to:\n" +
+                            "• Database connection issue\n" +
+                            "• Email already exists\n" +
+                            "• Server problem\n\n" +
+                            "Please try again or contact support.");
         }
     }
 
@@ -260,7 +277,17 @@ public class AuthController {
 
             System.out.println("Loading FXML from: " + fxmlPath);
 
-            Parent root = FXMLLoader.load(getClass().getResource(fxmlPath));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+            Parent root = loader.load();
+
+            // Set scene manager for the controller if it supports it
+            Object controller = loader.getController();
+            if (controller instanceof AuthController) {
+                ((AuthController) controller).setSceneManager(sceneManager);
+            } else if (controller instanceof ProductController) {
+                ((ProductController) controller).setSceneManager(sceneManager);
+            }
+
             if (root == null) {
                 throw new IOException("Failed to load FXML file: " + fxmlPath);
             }
@@ -271,7 +298,7 @@ public class AuthController {
                 return;
             }
 
-            Scene scene = new Scene(root, 900, 700);
+            Scene scene = new Scene(root, 1200, 800);
             stage.setScene(scene);
             stage.setTitle(getSceneTitle(sceneName));
             stage.show();
@@ -303,12 +330,11 @@ public class AuthController {
 
     private String getSceneTitle(String sceneName) {
         switch (sceneName) {
-            case "login":
-                return "CompuMart - Login";
-            case "register":
-                return "CompuMart - Register";
-            default:
-                return "CompuMart";
+            case "login": return "CompuMart - Login";
+            case "register": return "CompuMart - Register";
+            case "products": return "CompuMart - Products";
+            case "adminDashboard": return "CompuMart - Admin Dashboard";
+            default: return "CompuMart";
         }
     }
 
@@ -357,22 +383,16 @@ public class AuthController {
         System.out.println("=== MANUAL DATABASE TEST ===");
         authService.testConnection();
 
-        // Test database health
-        boolean isHealthy = authService.isDatabaseHealthy();
-        System.out.println("Database health check: " + (isHealthy ? "HEALTHY" : "UNHEALTHY"));
-
         // Test admin login
         User admin = authService.login("admin@compumart.com", "admin123");
         if (admin != null) {
             showAlert(Alert.AlertType.INFORMATION, "Database Test",
                     "✅ Database connection successful!\n" +
-                            "Database health: " + (isHealthy ? "HEALTHY" : "UNHEALTHY") + "\n" +
                             "Admin user can login properly.\n" +
                             "Welcome " + admin.getFullName());
         } else {
             showAlert(Alert.AlertType.ERROR, "Database Test",
                     "❌ Database test failed!\n" +
-                            "Database health: " + (isHealthy ? "HEALTHY" : "UNHEALTHY") + "\n" +
                             "Admin user cannot login.\n" +
                             "Check database connection and initialization.");
         }

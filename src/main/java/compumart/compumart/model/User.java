@@ -7,6 +7,8 @@ public class User {
     private String firstName;
     private String lastName;
     private String role;
+    private String phone;
+    private String address;
 
     public User() {}
 
@@ -36,6 +38,12 @@ public class User {
 
     public String getRole() { return role; }
     public void setRole(String role) { this.role = role; }
+
+    public String getPhone() { return phone; }
+    public void setPhone(String phone) { this.phone = phone; }
+
+    public String getAddress() { return address; }
+    public void setAddress(String address) { this.address = address; }
 
     public String getFullName() {
         return firstName + " " + lastName;

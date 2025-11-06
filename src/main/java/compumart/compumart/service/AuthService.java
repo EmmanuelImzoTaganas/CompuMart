@@ -1,6 +1,7 @@
 package compumart.compumart.service;
 
 import compumart.compumart.model.User;
+import compumart.compumart.SessionManager;
 import java.sql.*;
 
 public class AuthService {
@@ -25,6 +26,10 @@ public class AuthService {
                 user.setFirstName(rs.getString("first_name"));
                 user.setLastName(rs.getString("last_name"));
                 user.setRole(rs.getString("role"));
+
+                // Set session
+                SessionManager.getInstance().setCurrentUser(user);
+
                 System.out.println("Login successful for: " + user.getEmail());
                 return user;
             } else {
