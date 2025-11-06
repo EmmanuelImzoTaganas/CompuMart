@@ -38,7 +38,7 @@ public class Main extends Application {
 
         javafx.scene.layout.StackPane root = new javafx.scene.layout.StackPane(label);
         javafx.scene.Scene scene = new javafx.scene.Scene(root, 600, 400);
-        primaryStage.setTitle("CompuMart - Error");
+        primaryStage.setTitle("CompuMart - Error!");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
