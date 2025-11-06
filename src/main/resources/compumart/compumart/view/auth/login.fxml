@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      spacing="20" alignment="CENTER" style="-fx-padding: 40;">
+
+    <Label text="CompuMart Login" style="-fx-font-size: 24; -fx-font-weight: bold;"/>
+
+    <VBox spacing="15" style="-fx-pref-width: 300;">
+        <Label text="Email"/>
+        <TextField fx:id="loginEmailField" promptText="Enter your email"/>
+
+        <Label text="Password"/>
+        <PasswordField fx:id="loginPasswordField" promptText="Enter your password"/>
+
+        <Button text="Login" onAction="#handleLogin"
+                style="-fx-background-color: #007bff; -fx-text-fill: white; -fx-pref-width: 300;"/>
+
+        <Button text="Register" onAction="#showRegister"
+                style="-fx-background-color: #6c757d; -fx-text-fill: white; -fx-pref-width: 300;"/>
+    </VBox>
+
+    <VBox style="-fx-background-color: #f8f9fa; -fx-padding: 15; -fx-background-radius: 5;">
+        <Label text="Demo Credentials:" style="-fx-font-weight: bold;"/>
+        <Label text="Admin: admin@compumart.com / admin123"/>
+    </VBox>
+</VBox>

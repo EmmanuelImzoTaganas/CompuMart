@@ -36,8 +36,16 @@ javafx {
 }
 
 dependencies {
+    implementation("org.controlsfx:controlsfx:11.2.1")
+    implementation("com.dlsc.formsfx:formsfx-core:11.6.0") {
+        exclude(group = "org.openjfx")
+    }
+    implementation("org.kordamp.bootstrapfx:bootstrapfx-core:0.4.0")
     testImplementation("org.junit.jupiter:junit-jupiter-api:${junitVersion}")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:${junitVersion}")
+    implementation(platform("org.mongodb:mongodb-driver-bom:5.6.1"))
+    implementation("org.mongodb:mongodb-driver-sync")
+    implementation("org.slf4j:slf4j-simple:2.0.12")
 }
 
 tasks.withType<Test> {
