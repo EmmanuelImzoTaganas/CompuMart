@@ -25,9 +25,14 @@ public class DatabaseService {
     }
 
     public Connection getConnection() throws SQLException {
-        Connection conn = DriverManager.getConnection(DB_URL);
-        System.out.println("🔗 Database connection established to: " + DB_URL);
-        return conn;
+        try {
+            Connection conn = DriverManager.getConnection(DB_URL);
+            System.out.println("🔗 Database connection established to: " + DB_URL);
+            return conn;
+        } catch (SQLException e) {
+            System.err.println("❌ Failed to connect to database: " + e.getMessage());
+            throw e; // Re-throw to let caller handle it
+        }
     }
 
     public void initializeDatabase() {

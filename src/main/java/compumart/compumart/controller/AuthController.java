@@ -141,6 +141,13 @@ public class AuthController {
             return;
         }
 
+        // Check database health first
+        if (!authService.isDatabaseHealthy()) {
+            showAlert(Alert.AlertType.ERROR, "Database Error",
+                    "Cannot connect to database. Please try again later.");
+            return;
+        }
+
         // Test database connection first
         authService.testConnection();
 
@@ -186,12 +193,18 @@ public class AuthController {
             switchToScene("login");
 
         } else {
-            showAlert(Alert.AlertType.ERROR, "Registration Failed",
-                    "Registration failed. This could be due to:\n" +
-                            "• Database connection issue\n" +
-                            "• Email already exists\n" +
-                            "• Server problem\n\n" +
-                            "Please try again or contact support.");
+            // More specific error message
+            String errorMessage = "Registration failed. This could be due to:\n" +
+                    "• Database connection issue\n" +
+                    "• Email already exists\n" +
+                    "• Server problem\n\n" +
+                    "Please try again or contact support.";
+
+            showAlert(Alert.AlertType.ERROR, "Registration Failed", errorMessage);
+
+            // Debug: Try to check if email exists again to confirm
+            boolean emailStillExists = authService.emailExists(email);
+            System.out.println("Double-checking email existence after failed registration: " + emailStillExists);
         }
     }
 
@@ -207,6 +220,19 @@ public class AuthController {
             loginEmailField.setText("admin@compumart.com");
             loginPasswordField.setText("admin123");
             System.out.println("Demo credentials filled. Click Login to test.");
+        }
+    }
+
+    // Test registration with sample data
+    @FXML
+    private void testRegistration() {
+        if (registerFirstNameField != null && registerEmailField != null) {
+            registerFirstNameField.setText("Test");
+            registerLastNameField.setText("User");
+            registerEmailField.setText("test" + System.currentTimeMillis() + "@test.com");
+            registerPasswordField.setText("test123");
+            registerConfirmPasswordField.setText("test123");
+            System.out.println("Test registration data filled. Click Register to test.");
         }
     }
 
@@ -331,16 +357,22 @@ public class AuthController {
         System.out.println("=== MANUAL DATABASE TEST ===");
         authService.testConnection();
 
+        // Test database health
+        boolean isHealthy = authService.isDatabaseHealthy();
+        System.out.println("Database health check: " + (isHealthy ? "HEALTHY" : "UNHEALTHY"));
+
         // Test admin login
         User admin = authService.login("admin@compumart.com", "admin123");
         if (admin != null) {
             showAlert(Alert.AlertType.INFORMATION, "Database Test",
                     "✅ Database connection successful!\n" +
+                            "Database health: " + (isHealthy ? "HEALTHY" : "UNHEALTHY") + "\n" +
                             "Admin user can login properly.\n" +
                             "Welcome " + admin.getFullName());
         } else {
             showAlert(Alert.AlertType.ERROR, "Database Test",
                     "❌ Database test failed!\n" +
+                            "Database health: " + (isHealthy ? "HEALTHY" : "UNHEALTHY") + "\n" +
                             "Admin user cannot login.\n" +
                             "Check database connection and initialization.");
         }

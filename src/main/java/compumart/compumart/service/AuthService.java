@@ -59,6 +59,8 @@ public class AuthService {
 
         } catch (SQLException e) {
             System.err.println("Registration error: " + e.getMessage());
+            System.err.println("SQL State: " + e.getSQLState());
+            System.err.println("Error Code: " + e.getErrorCode());
             e.printStackTrace();
             return false;
         }
@@ -92,6 +94,20 @@ public class AuthService {
             System.err.println("❌ Database connection test: FAILED");
             System.err.println("Error: " + e.getMessage());
             e.printStackTrace();
+        }
+    }
+
+    // Check database health
+    public boolean isDatabaseHealthy() {
+        try (Connection conn = dbService.getConnection();
+             Statement stmt = conn.createStatement()) {
+
+            ResultSet rs = stmt.executeQuery("SELECT 1");
+            System.out.println("✅ Database health check: PASSED");
+            return true;
+        } catch (SQLException e) {
+            System.err.println("❌ Database health check failed: " + e.getMessage());
+            return false;
         }
     }
 }
