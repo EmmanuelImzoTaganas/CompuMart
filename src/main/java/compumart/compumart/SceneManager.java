@@ -1,6 +1,5 @@
 package compumart.compumart;
 
-import compumart.compumart.controller.NavigationController;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -13,23 +12,16 @@ import java.util.Map;
 public class SceneManager {
     private Stage primaryStage;
     private Map<String, String> fxmlFiles;
-    private NavigationController navigationController;
 
     public SceneManager(Stage primaryStage) {
         this.primaryStage = primaryStage;
         initializeFXMLPaths();
-        initializeNavigationController();
     }
 
     private void initializeFXMLPaths() {
         fxmlFiles = new HashMap<>();
         fxmlFiles.put("login", "/compumart/compumart/view/auth/Login.fxml");
         fxmlFiles.put("register", "/compumart/compumart/view/auth/Register.fxml");
-    }
-
-    private void initializeNavigationController() {
-        navigationController = new NavigationController();
-        navigationController.setSceneManager(this);
     }
 
     public void switchTo(String sceneName) {
@@ -42,16 +34,10 @@ public class SceneManager {
 
             System.out.println("Loading scene: " + sceneName + " from: " + fxmlPath);
 
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+            // Let FXML loader create the controller automatically
+            Parent root = FXMLLoader.load(getClass().getResource(fxmlPath));
 
-            // Set the navigation controller for scenes that need it
-            if (sceneName.equals("login") || sceneName.equals("register")) {
-                loader.setController(navigationController);
-            }
-
-            Parent root = loader.load();
             Scene scene = new Scene(root, 900, 700);
-
             primaryStage.setScene(scene);
             primaryStage.setTitle(getSceneTitle(sceneName));
             primaryStage.show();
@@ -69,7 +55,7 @@ public class SceneManager {
             case "login":
                 return "CompuMart - Login";
             case "register":
-                return "Compumart - Register";
+                return "CompuMart - Register";
             default:
                 return "CompuMart";
         }

@@ -15,6 +15,8 @@ public class AuthService {
             pstmt.setString(1, email);
             pstmt.setString(2, password);
 
+            System.out.println("Executing login query for: " + email);
+
             ResultSet rs = pstmt.executeQuery();
             if (rs.next()) {
                 User user = new User();
@@ -23,9 +25,13 @@ public class AuthService {
                 user.setFirstName(rs.getString("first_name"));
                 user.setLastName(rs.getString("last_name"));
                 user.setRole(rs.getString("role"));
+                System.out.println("Login successful for: " + user.getEmail());
                 return user;
+            } else {
+                System.out.println("Login failed - no user found with these credentials");
             }
         } catch (SQLException e) {
+            System.err.println("Login error: " + e.getMessage());
             e.printStackTrace();
         }
         return null;
@@ -43,8 +49,16 @@ public class AuthService {
             pstmt.setString(4, user.getLastName());
             pstmt.setString(5, "customer");
 
-            return pstmt.executeUpdate() > 0;
+            System.out.println("Attempting to register user: " + user.getEmail());
+            System.out.println("First name: " + user.getFirstName() + ", Last name: " + user.getLastName());
+
+            int rowsAffected = pstmt.executeUpdate();
+            System.out.println("Registration query executed. Rows affected: " + rowsAffected);
+
+            return rowsAffected > 0;
+
         } catch (SQLException e) {
+            System.err.println("Registration error: " + e.getMessage());
             e.printStackTrace();
             return false;
         }
@@ -58,10 +72,26 @@ public class AuthService {
 
             pstmt.setString(1, email);
             ResultSet rs = pstmt.executeQuery();
-            return rs.next();
+            boolean exists = rs.next();
+            System.out.println("Email " + email + " exists: " + exists);
+            return exists;
+
         } catch (SQLException e) {
+            System.err.println("Email check error: " + e.getMessage());
             e.printStackTrace();
             return false;
+        }
+    }
+
+    // Test database connection
+    public void testConnection() {
+        try (Connection conn = dbService.getConnection()) {
+            System.out.println("✅ Database connection test: SUCCESS");
+            System.out.println("Database URL: " + conn.getMetaData().getURL());
+        } catch (SQLException e) {
+            System.err.println("❌ Database connection test: FAILED");
+            System.err.println("Error: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 }

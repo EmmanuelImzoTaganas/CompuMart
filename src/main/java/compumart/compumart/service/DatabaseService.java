@@ -8,11 +8,12 @@ public class DatabaseService {
 
     static {
         try {
-            // Load SQLite JDBC driver
+            // Force driver registration
             Class.forName("org.sqlite.JDBC");
-            System.out.println("SQLite JDBC driver loaded successfully");
+            System.out.println("✅ SQLite JDBC driver loaded successfully");
         } catch (ClassNotFoundException e) {
-            System.err.println("SQLite JDBC driver not found: " + e.getMessage());
+            System.err.println("❌ SQLite JDBC driver not found: " + e.getMessage());
+            System.err.println("Make sure sqlite-jdbc is in your dependencies");
         }
     }
 
@@ -24,12 +25,13 @@ public class DatabaseService {
     }
 
     public Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(DB_URL);
+        Connection conn = DriverManager.getConnection(DB_URL);
+        System.out.println("🔗 Database connection established to: " + DB_URL);
+        return conn;
     }
 
     public void initializeDatabase() {
         String[] createTables = {
-                // Users table
                 """
             CREATE TABLE IF NOT EXISTS users (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -44,21 +46,22 @@ public class DatabaseService {
         };
 
         try (Connection conn = getConnection()) {
-            System.out.println("Database connection established");
+            System.out.println("🔄 Initializing database...");
 
             for (String sql : createTables) {
                 try (Statement stmt = conn.createStatement()) {
                     stmt.execute(sql);
+                    System.out.println("✅ Table created/verified: users");
                 }
             }
 
             // Insert sample admin user
             insertAdminUser(conn);
 
-            System.out.println("Database initialized successfully!");
+            System.out.println("✅ Database initialized successfully!");
 
         } catch (SQLException e) {
-            System.err.println("Error initializing database: " + e.getMessage());
+            System.err.println("❌ Error initializing database: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -71,8 +74,13 @@ public class DatabaseService {
             pstmt.setString(3, "System");
             pstmt.setString(4, "Admin");
             pstmt.setString(5, "admin");
-            pstmt.executeUpdate();
-            System.out.println("Admin user created: admin@compumart.com / admin123");
+
+            int rows = pstmt.executeUpdate();
+            if (rows > 0) {
+                System.out.println("✅ Admin user created: admin@compumart.com / admin123");
+            } else {
+                System.out.println("ℹ️ Admin user already exists");
+            }
         }
     }
 }

@@ -1,22 +1,21 @@
 package compumart.compumart;
 
+import compumart.compumart.service.DatabaseService;
 import javafx.application.Application;
-import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 public class Main extends Application {
-
-    private SceneManager sceneManager;
 
     @Override
     public void start(Stage primaryStage) {
         try {
             System.out.println("Starting CompuMart Application...");
 
+            // Initialize database
+            DatabaseService.getInstance().initializeDatabase();
+
             // Initialize scene manager
-            sceneManager = new SceneManager(primaryStage);
+            SceneManager sceneManager = new SceneManager(primaryStage);
 
             // Start with login screen
             sceneManager.switchTo("login");
@@ -31,11 +30,11 @@ public class Main extends Application {
     }
 
     private void showErrorScreen(Stage primaryStage, String message) {
-        Label label = new Label(message);
+        javafx.scene.control.Label label = new javafx.scene.control.Label(message);
         label.setStyle("-fx-font-size: 14px; -fx-text-fill: red; -fx-padding: 20;");
 
-        StackPane root = new StackPane(label);
-        Scene scene = new Scene(root, 600, 400);
+        javafx.scene.layout.StackPane root = new javafx.scene.layout.StackPane(label);
+        javafx.scene.Scene scene = new javafx.scene.Scene(root, 600, 400);
         primaryStage.setTitle("CompuMart - Error");
         primaryStage.setScene(scene);
         primaryStage.show();
