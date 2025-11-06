@@ -1,36 +1,47 @@
 package compumart.compumart;
 
-import compumart.compumart.controller.AuthController;
-import compumart.compumart.service.DatabaseService;
 import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
 public class Main extends Application {
 
-    private Stage primaryStage;
+    private SceneManager sceneManager;
 
     @Override
     public void start(Stage primaryStage) {
-        this.primaryStage = primaryStage;
-
-        System.out.println("Starting CompuMart Application...");
-
-        // Initialize database
         try {
-            DatabaseService.getInstance().initializeDatabase();
-            System.out.println("Database initialized successfully");
-        } catch (Exception e) {
-            System.err.println("Failed to initialize database: " + e.getMessage());
-            e.printStackTrace();
-        }
+            System.out.println("Starting CompuMart Application...");
 
-        // Show login screen
-        AuthController authController = new AuthController(primaryStage);
-        authController.showLogin();
+            // Initialize scene manager
+            sceneManager = new SceneManager(primaryStage);
+
+            // Start with login screen
+            sceneManager.switchTo("login");
+
+            System.out.println("Application started successfully!");
+
+        } catch (Exception e) {
+            System.err.println("Error starting application: " + e.getMessage());
+            e.printStackTrace();
+            showErrorScreen(primaryStage, "Error: " + e.getMessage());
+        }
+    }
+
+    private void showErrorScreen(Stage primaryStage, String message) {
+        Label label = new Label(message);
+        label.setStyle("-fx-font-size: 14px; -fx-text-fill: red; -fx-padding: 20;");
+
+        StackPane root = new StackPane(label);
+        Scene scene = new Scene(root, 600, 400);
+        primaryStage.setTitle("CompuMart - Error");
+        primaryStage.setScene(scene);
+        primaryStage.show();
     }
 
     public static void main(String[] args) {
-        System.out.println("Launching JavaFX application...");
         launch(args);
     }
 }
