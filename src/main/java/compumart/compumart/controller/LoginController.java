@@ -33,7 +33,11 @@ public class LoginController {
         }
         boolean authenticated = userDao.authenticate(email, password);
         if (authenticated) {
-            showAlert(Alert.AlertType.INFORMATION, "Login Successful!", "Welcome back!");
+            showAlert(Alert.AlertType.INFORMATION, "Login Successful", "Welcome back!");
+
+            // Navigate to products page after successful login
+            navigateToProducts();
+
             loginEmailField.clear();
             loginPasswordField.clear();
 
@@ -70,6 +74,27 @@ public class LoginController {
         } catch (IOException e) {
             e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Navigation Error!", "Unable to load registration page.");
+        }
+    }
+
+    private void navigateToProducts() {
+        try {
+            // Load the products FXML file - adjust the path based on your project structure
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/compumart/compumart/product.fxml"));
+            Parent root = loader.load();
+
+            // Get the current stage
+            Stage stage = (Stage) loginEmailField.getScene().getWindow();
+
+            // Set the new scene
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("CompuMart - Products");
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Navigation Error", "Unable to load products page.");
         }
     }
 
