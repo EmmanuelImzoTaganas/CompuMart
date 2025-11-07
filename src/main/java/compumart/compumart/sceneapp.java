@@ -32,11 +32,11 @@ public class sceneapp extends Application {
         addScene("login", "login-view.fxml", 450, 550);
         addScene("register", "register-view.fxml", 450, 550);
         addScene("admin", "admin-view.fxml", 400, 300);
-        addScene("user-dashboard", "user-main-view.fxml", 1000, 700);
+        addScene("user-dashboard", "main-view.fxml", 1000, 700);
         addScene("product", "product-view.fxml", 1200, 600);
         addScene("cart", "cart-view.fxml", 900, 600);
-        addScene("payment", "payment-view.fxml", 950, 650);
-        addScene("account", "account-view.fxml", 1000, 700);
+        addScene("payment", "pay-view.fxml", 950, 650);
+        addScene("account", "acc-view.fxml", 1000, 700);
         addScene("users", "users-view.fxml", 450, 550);
         addScene("orders", "orders-view.fxml", 450, 550);
 
@@ -46,7 +46,7 @@ public class sceneapp extends Application {
     }
 
     private void addScene(String name, String fxml, int width, int height) throws IOException {
-        URL fxmlUrl = getClass().getResource("/bcbfixhub/bcbfixhub/" + fxml);
+        URL fxmlUrl = getClass().getResource("/compumart/compumart/" + fxml);
         if (fxmlUrl == null) fxmlUrl = getClass().getResource("/" + fxml);
         if (fxmlUrl == null) throw new IOException("FXML not found: " + fxml);
 

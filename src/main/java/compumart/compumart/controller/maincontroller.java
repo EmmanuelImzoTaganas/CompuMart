@@ -178,7 +178,7 @@ public class maincontroller extends sceneController implements Initializable {
 
         for (String folder : folders) {
             for (String ext : extensions) {
-                String path = "bcbfixhub/bcbfixhub/product_images/" + folder + "/" + imageName + ext;
+                String path = "compumart/compumart/images/" + folder + "/" + imageName + ext;
                 try (var stream = getClass().getClassLoader().getResourceAsStream(path)) {
                     if (stream != null) {
                         Image img = new Image(stream);
@@ -193,7 +193,7 @@ public class maincontroller extends sceneController implements Initializable {
 
     private Image getPlaceholderImage() {
         try (var stream = getClass().getClassLoader()
-                .getResourceAsStream("bcbfixhub/bcbfixhub/product_images/placeholder.png")) {
+                .getResourceAsStream("compumart/compumart/images/placeholder.png")) {
             return (stream != null) ? new Image(stream) : new Image("https://via.placeholder.com/180");
         } catch (Exception e) {
             return new Image("https://via.placeholder.com/180");

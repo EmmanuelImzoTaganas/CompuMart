@@ -68,7 +68,7 @@ public class LoginController {
     private void navigateToAdminProducts() {
         try {
             // Load the admin product management FXML
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/compumart/compumart/product-view.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/compumart/compumart/admin-view.fxml"));
             Parent root = loader.load();
 
             // Get the current stage

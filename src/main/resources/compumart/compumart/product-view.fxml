@@ -17,7 +17,7 @@
 
     <top>
         <HBox styleClass="back-button-bar">
-
+            <Button onAction="#backAdmin" text="Back to Admin" styleClass="back-button" />
         </HBox>
     </top>
 
