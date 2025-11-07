@@ -20,24 +20,17 @@ import java.util.Map;
 
 public class AuthController {
 
-    // Login fields
-    @FXML private TextField loginEmailField;
-    @FXML private PasswordField loginPasswordField;
-    @FXML private Hyperlink registerLink;
+    // UI Elements and stuff
+    @FXML private TextField loginEmailField, registerFirstNameField, registerLastNameField, registerEmailField;
+    @FXML private PasswordField loginPasswordField, registerPasswordField, registerConfirmPasswordField;
+    @FXML private Hyperlink registerLink, loginLink;
 
-    // Register fields
-    @FXML private TextField registerFirstNameField;
-    @FXML private TextField registerLastNameField;
-    @FXML private TextField registerEmailField;
-    @FXML private PasswordField registerPasswordField;
-    @FXML private PasswordField registerConfirmPasswordField;
-    @FXML private Hyperlink loginLink;
-
-    private AuthService authService;
-    private Map<String, String> fxmlPaths;
+    // Utilities
+    private final AuthService authService = new AuthService();
     private SceneManager sceneManager;
+    private final Map<String, String> fxmlPaths = new HashMap<>();
 
-    public AuthController() {
+   public AuthController() {
         this.authService = new AuthService();
         initializeFXMLPaths();
     }
