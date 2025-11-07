@@ -9,29 +9,7 @@ import javafx.scene.control.Hyperlink;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class NavigationController implements Initializable {
 
-    private SceneManager sceneManager;
-
-    @FXML
-    private Hyperlink registerLink;
-
-    @FXML
-    private Hyperlink loginLink;
-
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        System.out.println("NavigationController initialized");
-
-        // Set up navigation handlers
-        if (registerLink != null) {
-            registerLink.setOnAction(e -> switchToRegister());
-        }
-
-        if (loginLink != null) {
-            loginLink.setOnAction(e -> switchToLogin());
-        }
-    }
 
     public void setSceneManager(SceneManager sceneManager) {
         this.sceneManager = sceneManager;
