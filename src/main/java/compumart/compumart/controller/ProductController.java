@@ -12,7 +12,7 @@ import org.bson.Document;
 
 import java.util.*;
 
-public class ProductController {
+public class ProductController extends sceneController {
 
     @FXML private TabPane tabPane;
 
@@ -237,8 +237,10 @@ public class ProductController {
         alert.showAndWait();
     }
 
-
-
+    // goes back to admin tools
+    public void backAdmin(ActionEvent event) {
+        app.switchTo("admin");
+    }
 
     // === Inner Product Class ===
     public static class Product {

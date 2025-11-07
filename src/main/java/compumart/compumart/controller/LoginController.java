@@ -22,6 +22,10 @@ public class LoginController {
 
     private final UserDao userDao = new UserDao();
 
+    // Hardcoded admin credentials
+    private static final String ADMIN_EMAIL = "admin@123.com";
+    private static final String ADMIN_PASSWORD = "12345";
+
     @FXML
     private void handleLogin(ActionEvent event) {
         String email = loginEmailField.getText().trim();
@@ -31,33 +35,75 @@ public class LoginController {
             showAlert(Alert.AlertType.ERROR, "Error", "Please fill in all fields.");
             return;
         }
+
+        // Check if it's the hardcoded admin
+        if (ADMIN_EMAIL.equals(email) && ADMIN_PASSWORD.equals(password)) {
+            showAlert(Alert.AlertType.INFORMATION, "Admin Login Successful", "Welcome Admin!");
+
+            // Navigate to admin products page
+            navigateToAdminProducts();
+
+            loginEmailField.clear();
+            loginPasswordField.clear();
+            return;
+        }
+
+        // Regular user authentication
         boolean authenticated = userDao.authenticate(email, password);
         if (authenticated) {
             showAlert(Alert.AlertType.INFORMATION, "Login Successful", "Welcome back!");
 
-            // Navigate to products page after successful login
+            // Navigate to regular user products page
             navigateToProducts();
 
             loginEmailField.clear();
             loginPasswordField.clear();
 
-            try {
-                FXMLLoader loader = new FXMLLoader(UserApplication.class.getResource("/compumart/compumart/main-user-view.fxml"));
-                Parent root = loader.load();
-
-                // ✅ Get the stage from the current window
-                Stage stage = (Stage) loginEmailField.getScene().getWindow();
-                stage.setScene(new Scene(root));
-                stage.show();
-
-            } catch (IOException e) {
-                e.printStackTrace();
-                showAlert(Alert.AlertType.ERROR, "Error", "Unable to load main user view.");
-            }
-
         } else {
             showAlert(Alert.AlertType.ERROR, "Login Failed.", "Invalid email or password.");
             loginPasswordField.clear();
+        }
+    }
+
+    private void navigateToAdminProducts() {
+        try {
+            // Load the admin product management FXML
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/compumart/compumart/product-view.fxml"));
+            Parent root = loader.load();
+
+            // Get the current stage
+            Stage stage = (Stage) loginEmailField.getScene().getWindow();
+
+            // Set the new scene
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("CompuMart - Admin Panel");
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Navigation Error", "Unable to load admin panel.");
+        }
+    }
+
+    private void navigateToProducts() {
+        try {
+            // Load the regular user products FXML
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/compumart/compumart/main-view.fxml"));
+            Parent root = loader.load();
+
+            // Get the current stage
+            Stage stage = (Stage) loginEmailField.getScene().getWindow();
+
+            // Set the new scene
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("CompuMart - Products");
+            stage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Navigation Error", "Unable to load products page.");
         }
     }
 
@@ -74,27 +120,6 @@ public class LoginController {
         } catch (IOException e) {
             e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Navigation Error!", "Unable to load registration page.");
-        }
-    }
-
-    private void navigateToProducts() {
-        try {
-            // Load the products FXML file - adjust the path based on your project structure
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/compumart/compumart/main-view.fxml"));
-            Parent root = loader.load();
-
-            // Get the current stage
-            Stage stage = (Stage) loginEmailField.getScene().getWindow();
-
-            // Set the new scene
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.setTitle("CompuMart - Products");
-            stage.show();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Navigation Error", "Unable to load products page.");
         }
     }
 
