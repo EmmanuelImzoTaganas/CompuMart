@@ -2,33 +2,41 @@ package compumart.compumart.utils;
 
 import com.mongodb.client.MongoClient;
 import com.mongodb.client.MongoClients;
-import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
-import org.bson.Document;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import static com.mongodb.client.model.Filters.and;
-import static com.mongodb.client.model.Filters.eq;
 
 public class MongoDBConnectionManager {
 
-    private static final String CONNECTION_STRING = "mongodb+srv://davidvallenas2003_db_user:S2f14AHEnPTjxQlM@goofygoobers.n0hpolu.mongodb.net/";
-    private static MongoClient mongoClient = null;
-    private static final Map<String, MongoDatabase> databases = new HashMap<>();
+    private static final String CONNECTION_STRING =
+            "mongodb+srv://davidvallenas2003_db_user:S2f14AHEnPTjxQlM@goofygoobers.n0hpolu.mongodb.net/";
+    private static final String DATABASE_STRING = "CompuMART";
 
-    private static MongoClient getClient() {
+    private static final MongoDBConnectionManager instance = new MongoDBConnectionManager();
+
+    private MongoClient mongoClient;
+    private MongoDatabase database;
+
+    private MongoDBConnectionManager() {
+        // private constructor for singleton
+    }
+
+    public static MongoDBConnectionManager getInstance() {
+        return instance;
+    }
+
+    public MongoClient getDatabaseClient() {
         if (mongoClient == null) {
             mongoClient = MongoClients.create(CONNECTION_STRING);
         }
         return mongoClient;
     }
 
-    public static MongoDatabase getDatabase(String dbName) {
-        if (!databases.containsKey(dbName)) {
-            databases.put(dbName, getClient().getDatabase(dbName));
+    public MongoDatabase getDatabase() {
+        if (database == null) {
+            if (mongoClient == null) {
+                mongoClient = MongoClients.create(CONNECTION_STRING);
+            }
+            database = mongoClient.getDatabase(DATABASE_STRING);
         }
-        return databases.get(dbName);
+        return database;
     }
 }

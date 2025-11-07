@@ -19,5 +19,4 @@ module compumart.compumart {
     exports compumart.compumart;
     exports compumart.compumart.controller;
     exports compumart.compumart.model;
-
 }
