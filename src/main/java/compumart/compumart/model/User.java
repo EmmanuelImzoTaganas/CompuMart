@@ -1,25 +1,4 @@
-package compumart.compumart.model;
-
-import org.bson.Document;
-import java.util.Date;
-
-public class User extends BaseModel {
-    private String fName;
-    private String lName;
-    private String email;
-    private String password;
-    private String phone;
-    private String address;
-    private String role;
-    private Date createdAt;
-
-    public User() {
-        this.role = "user";
-        this.createdAt = new Date();
-    }
-
-
-    public String getfName() {
+() {
         return fName;
     }
 
