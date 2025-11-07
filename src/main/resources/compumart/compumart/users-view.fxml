@@ -14,7 +14,7 @@
 
 <BorderPane prefHeight="700.0" prefWidth="1000.0" styleClass="root" stylesheets="@cssfiles/main.css"
             xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="compumart.compumart.controller.usercontroller">
+
 
     <top>
         <VBox>
@@ -27,7 +27,6 @@
                     <HBox HBox.hgrow="ALWAYS"/> <Button mnemonicParsing="false" styleClass="nav-button" text="Dashboard"/>
                     <Button mnemonicParsing="false" styleClass="nav-button-selected" text="Users"/>
                     <Button mnemonicParsing="false" styleClass="nav-button" text="Orders"/>
-                    <Button fx:id="logoutButton" mnemonicParsing="false" styleClass="nav-button" text="Logout"/>
                 </children>
             </HBox>
 
@@ -37,7 +36,6 @@
                 </padding>
                 <children>
                     <Label styleClass="filter-bar-title" text="User Management"/>
-                    <Region HBox.hgrow="ALWAYS"/> <TextField fx:id="searchUserField" promptText="Search users..." prefWidth="250.0"/>
                     <Button fx:id="backButton" text="Back to Dashboard" onAction="#backAdmin"
                             styleClass="cart-button" mnemonicParsing="false"/>
                 </children>
