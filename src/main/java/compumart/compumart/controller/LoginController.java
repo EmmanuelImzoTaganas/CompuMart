@@ -33,7 +33,7 @@ public class LoginController {
         }
         boolean authenticated = userDao.authenticate(email, password);
         if (authenticated) {
-            showAlert(Alert.AlertType.INFORMATION, "Login Successful", "Welcome back!");
+            showAlert(Alert.AlertType.INFORMATION, "Login Successful!", "Welcome back!");
             loginEmailField.clear();
             loginPasswordField.clear();
 
@@ -52,7 +52,7 @@ public class LoginController {
             }
 
         } else {
-            showAlert(Alert.AlertType.ERROR, "Login Failed", "Invalid email or password.");
+            showAlert(Alert.AlertType.ERROR, "Login Failed.", "Invalid email or password.");
             loginPasswordField.clear();
         }
     }
@@ -69,7 +69,7 @@ public class LoginController {
 
         } catch (IOException e) {
             e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Navigation Error", "Unable to load registration page.");
+            showAlert(Alert.AlertType.ERROR, "Navigation Error!", "Unable to load registration page.");
         }
     }
 
