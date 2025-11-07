@@ -1,5 +1,6 @@
 package compumart.compumart.controller;
 
+import compumart.compumart.sceneapp;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -22,11 +23,11 @@ public class cartcontroller extends sceneController implements Initializable {
     @FXML private Button backButton;
     @FXML private Button checkoutButton;
 
-    private sceneController application;
+    private sceneapp application;
     private static final double TAX_RATE = 0.08;
 
     @Override
-    public void setApplication(sceneController application) {
+    public void setApplication(sceneapp application) {
         super.setApplication(application);
         this.application = application;
         loadCart();
