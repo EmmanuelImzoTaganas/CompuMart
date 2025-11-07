@@ -5,43 +5,38 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.StackPane?>
 
+<StackPane xmlns="http://javafx.com/javafx/21"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="compumart.compumart.controller.homecontroller"
+           prefHeight="600.0" prefWidth="500.0"
+           style="-fx-background-color: linear-gradient(to bottom right, #667eea, #764ba2);">
 
-<BorderPane prefHeight="600.0" prefWidth="500.0" styleClass="home-root"
-            stylesheets="@cssfiles/home.css"
-            xmlns="http://javafx.com/javafx/21"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="compumart.compumart.controller.homecontroller">
+    <VBox alignment="CENTER" spacing="30.0"
+          style="-fx-background-color: white; -fx-padding: 50; -fx-background-radius: 15; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);">
 
+        <children>
+            <ImageView fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true"> [cite: 2]
+                <image>
+                    <Image url="@/images/logo.jpg" />
+                </image>
+            </ImageView> [cite: 3]
 
-    <center>
-        <VBox alignment="CENTER" spacing="10.0">
-            <children>
-                <!-- EDITED: Set fitHeight to 300.0 -->
-                <ImageView fitHeight="300.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true">
-                    <image>
-                        <Image url="@/images/logo.jpg" />
-                    </image>
-                </ImageView>
-                <Label styleClass="home-title" text="BCB FixHub" />
-            </children>
-            <padding>
-                <Insets bottom="40.0" />
-            </padding>
-        </VBox>
-    </center>
+            <Label style="-fx-font-size: 32; -fx-font-weight: bold; -fx-text-fill: #444;" text="BCB FixHub" />
 
-    <!-- Bottom Navigation Buttons -->
-    <bottom>
-        <HBox styleClass="button-bar">
-            <children>
-                <Button onAction="#onLogin" styleClass="home-primary-button" text="Login" />
-                <Button onAction="#onRegister" styleClass="home-secondary-button" text="Register" />
-                <Button fx:id="exitButton" onAction="#onExit" styleClass="home-secondary-button" text="Exit" />
-            </children>
-        </HBox>
-    </bottom>
-</BorderPane>
+            <VBox spacing="15" alignment="CENTER">
+                <children>
+                    <Button onAction="#onLogin" text="Login"
+                            style="-fx-background-color: #667eea; -fx-text-fill: white; -fx-pref-width: 220; -fx-font-size: 14; -fx-font-weight: bold;"/>
+                    <Button onAction="#onRegister" text="Register"
+                            style="-fx-background-color: #764ba2; -fx-text-fill: white; -fx-pref-width: 220; -fx-font-size: 14; -fx-font-weight: bold;"/>
+                    <Button fx:id="exitButton" onAction="#onExit" text="Exit"
+                            style="-fx-background-color: #f4f4f4; -fx-text-fill: #333; -fx-pref-width: 220; -fx-font-size: 14; -fx-border-color: #ccc; -fx-border-radius: 3;"/>
+                </children>
+            </VBox>
+        </children>
+    </VBox>
+</StackPane>
