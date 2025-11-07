@@ -36,7 +36,7 @@
                 </padding>
                 <children>
                     <Label styleClass="filter-bar-title" text="User Management"/>
-                    <Button fx:id="backButton" text="Back to Dashboard" onAction="#backAdmin"
+                    <Button fx:id="backButton" text="Back to Dashboard"
                             styleClass="cart-button" mnemonicParsing="false"/>
                 </children>
             </HBox>
@@ -80,7 +80,7 @@
 
                     <Button fx:id="registerUserButton" text="Register User"
                             style="-fx-background-color: #27ae60; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 8 15;"
-                            onAction="#registerNewUser"/>
+                            />
                 </VBox>
 
                 <!-- Users Table -->
