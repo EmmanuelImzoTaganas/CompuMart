@@ -72,4 +72,46 @@ public class sceneapp extends Application {
             }
         }
 
-    }}
+        mainStage.setScene(scene);
+        mainStage.setTitle(capitalize(name));
+        mainStage.centerOnScreen();
+
+        Object controller = getControllerForScene(scene);
+        if (controller instanceof sceneController sc) sc.setApplication(this);
+
+        // Run refresh logic on the next JavaFX tick (after scene is displayed)
+        Platform.runLater(() -> {
+            if (controller instanceof cartcontroller cartController) {
+                cartController.loadCart(); // Always refresh cart display
+            } else if (controller instanceof paycontroller paymentController) {
+                paymentController.loadCartSafely();
+            } else if (controller instanceof acccontroller accountController) {
+                accountController.populateCart();
+            }
+        });
+    }
+
+    private Object getControllerForScene(Scene scene) {
+        if (scene.getUserData() instanceof FXMLLoader loader) {
+            return loader.getController();
+        }
+        return null;
+    }
+
+    private String capitalize(String s) {
+        if (s == null || s.isEmpty()) return s;
+        return s.substring(0, 1).toUpperCase() + s.substring(1);
+    }
+
+    public static void main(String[] args) {
+        launch();
+    }
+
+    public Object getControllerForScene(String name) {
+        Scene scene = scenes.get(name);
+        if (scene != null && scene.getUserData() instanceof FXMLLoader loader) {
+            return loader.getController();
+        }
+        return null;
+    }
+}
