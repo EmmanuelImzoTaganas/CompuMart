@@ -9,18 +9,19 @@
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane prefHeight="700.0" prefWidth="1000.0" styleClass="root" stylesheets="@cssfiles/main.css, @cssfiles/acc.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bcbfixhub.bcbfixhub.controllers.AccountController">
+<BorderPane prefHeight="700.0" prefWidth="1000.0" styleClass="root" stylesheets="@cssfiles/main.css, @cssfiles/acc.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="compumart.compumart.controller.acccontroller">
     <top>
         <VBox>
             <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="nav-bar">
                 <padding>
-                    <Insets top="10.0" right="30.0" bottom="10.0" left="30.0" /> [cite: 24]
+                    <Insets top="10.0" right="30.0" bottom="10.0" left="30.0" />
                 </padding>
                 <children>
-                    <Label styleClass="store-title" text="BCB Fix Hub" /> [cite: 24]
-                    <HBox HBox.hgrow="ALWAYS" /> <Button fx:id="storeButton" mnemonicParsing="false" onAction="#handleGoToStore" styleClass="nav-button" text="Store" /> [cite: 25]
-                    <Button mnemonicParsing="false" styleClass="nav-button-selected" text="My Account" /> [cite: 25]
-                    <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#handleLogout" styleClass="logout-button" text="Logout" /> [cite: 25]
+                    <Label styleClass="store-title" text="COMPUMART" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Button fx:id="storeButton" mnemonicParsing="false" onAction="#handleGoToStore" styleClass="nav-button" text="Store" />
+                    <Button mnemonicParsing="false" styleClass="nav-button-selected" text="My Account" />
+                    <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#handleLogout" styleClass="logout-button" text="Logout" />
                 </children>
             </HBox>
 
@@ -30,9 +31,9 @@
                 </padding>
                 <children>
                     <Label styleClass="filter-bar-title" text="Account Dashboard"/>
-                    <Region HBox.hgrow="ALWAYS"/> </children>
+                    <Region HBox.hgrow="ALWAYS"/>
+                </children>
             </HBox>
-
         </VBox>
     </top>
     <center>
@@ -43,18 +44,16 @@
                         <Insets top="30.0" right="30.0" bottom="30.0" left="30.0" />
                     </padding>
                     <children>
-
                         <VBox spacing="20.0" HBox.hgrow="ALWAYS"
                               style="-fx-background-color: #fcf6e8; -fx-background-radius: 12; -fx-padding: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);">
                             <children>
                                 <Label styleClass="section-title" text="Order History" />
-                                <ScrollPane fitToWidth="true" hbarPolicy="NEVER" styleClass="scroll-pane" VBox.vgrow="ALWAYS"> [cite: 28]
+                                <ScrollPane fitToWidth="true" hbarPolicy="NEVER" styleClass="scroll-pane" VBox.vgrow="ALWAYS">
                                     <content>
                                         <VBox fx:id="ordersContainer" spacing="15.0">
                                             <padding>
-                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" /> [cite: 29]
+                                                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                                             </padding>
-                                            [cite: 30]
                                         </VBox>
                                     </content>
                                 </ScrollPane>
@@ -63,17 +62,17 @@
 
                         <VBox prefWidth="350.0" spacing="10.0"
                               style="-fx-background-color: #fcf6e8; -fx-background-radius: 12; -fx-padding: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);">
-                            <children> [cite: 32]
-                                <Label styleClass="section-title" text="Current Cart" /> [cite: 32]
-                                <Label fx:id="emptyCartLabel" text="Your cart is empty." [cite_start]/> [cite: 33]
-                                <ScrollPane fx:id="cartScrollPane" fitToWidth="true" hbarPolicy="NEVER" styleClass="scroll-pane" VBox.vgrow="ALWAYS"> [cite: 33]
+                            <children>
+                                <Label styleClass="section-title" text="Current Cart" />
+                                <Label fx:id="emptyCartLabel" text="Your cart is empty." />
+                                <ScrollPane fx:id="cartScrollPane" fitToWidth="true" hbarPolicy="NEVER" styleClass="scroll-pane" VBox.vgrow="ALWAYS">
                                     <content>
-                                        <VBox fx:id="cartItemsContainer" spacing="10.0" /> [cite: 33]
-                                    </content> [cite: 34]
+                                        <VBox fx:id="cartItemsContainer" spacing="10.0" />
+                                    </content>
                                 </ScrollPane>
-                                <Button fx:id="checkoutButton" maxWidth="Infinity" mnemonicParsing="false" onAction="#handleGoToCheckout" styleClass="account-checkout-button" text="Go to Checkout" /> [cite: 34]
+                                <Button fx:id="checkoutButton" maxWidth="Infinity" mnemonicParsing="false" onAction="#handleGoToCheckout" styleClass="account-checkout-button" text="Go to Checkout" />
                             </children>
-                        </VBox> [cite: 31, 35]
+                        </VBox>
                     </children>
                 </HBox>
             </content>

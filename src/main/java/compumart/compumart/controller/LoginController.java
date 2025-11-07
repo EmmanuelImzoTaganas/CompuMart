@@ -1,7 +1,5 @@
 package compumart.compumart.controller;
 
-import compumart.compumart.UserApplication;
-import compumart.compumart.model.UserDao;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -20,7 +18,7 @@ public class LoginController {
     @FXML
     private PasswordField loginPasswordField;
 
-    private final UserDao userDao = new UserDao();
+    private final UserDAO userDao = new UserDAO();
 
     // Hardcoded admin credentials
     private static final String ADMIN_EMAIL = "admin@123.com";

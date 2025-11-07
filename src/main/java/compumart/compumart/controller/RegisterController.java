@@ -1,6 +1,5 @@
 package compumart.compumart.controller;
 
-import compumart.compumart.model.UserDao;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -20,7 +19,7 @@ public class RegisterController {
     @FXML   
     private PasswordField registerConfirmPasswordField;
 
-    private final UserDao userDao = new UserDao();
+    private final UserDAO userDao = new UserDAO();
 
     @FXML
     private void handleRegister() {
