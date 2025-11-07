@@ -1,6 +1,6 @@
 package compumart.compumart.controller;
 
-import compumart.compumart.sceneapp;
+import compumart.compumart.SceneApplication;
 import compumart.compumart.controller.maincontroller.Product;
 import compumart.compumart.utils.MongoDBConnectionManager;
 import com.mongodb.MongoException;
@@ -9,12 +9,10 @@ import com.mongodb.client.MongoDatabase;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
-import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
 import org.bson.Document;
 
 import java.net.URL;
@@ -24,7 +22,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-public class paycontroller extends sceneController implements Initializable {
+public class paycontroller extends SceneController implements Initializable {
 
     @FXML private ToggleButton gcashToggle;
     @FXML private ToggleButton paypalToggle;
@@ -50,14 +48,14 @@ public class paycontroller extends sceneController implements Initializable {
     @FXML private Label totalLabel;
 
     private ToggleGroup paymentToggleGroup;
-    private sceneapp application;
+    private SceneApplication application;
 
     private static final double TAX_RATE = 0.08;
     private static final String PAYMENT_DB = "Payment-Details";
 
     @Override
-    public void setApplication(sceneapp application) {
-        super.setApplication(application);
+    public void SetApplication(Scene application) {
+        super.SetApplication(application);
         this.application = application;
 
         if (cartItemsContainer != null) loadCartSafely();

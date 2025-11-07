@@ -1,9 +1,10 @@
 package compumart.compumart.controller;
 
-import compumart.compumart.sceneapp;
+import compumart.compumart.SceneApplication;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
@@ -14,7 +15,7 @@ import java.util.ResourceBundle;
 
 import compumart.compumart.controller.maincontroller.Product;
 
-public class cartcontroller extends sceneController implements Initializable {
+public class cartcontroller extends SceneController implements Initializable {
 
     @FXML private VBox cartItemsContainer;
     @FXML private Label subtotalLabel;
@@ -23,12 +24,12 @@ public class cartcontroller extends sceneController implements Initializable {
     @FXML private Button backButton;
     @FXML private Button checkoutButton;
 
-    private sceneapp application;
+    private SceneApplication application;
     private static final double TAX_RATE = 0.08;
 
     @Override
-    public void setApplication(sceneapp application) {
-        super.setApplication(application);
+    public void SetApplication(Scene application) {
+        super.SetApplication(application);
         this.application = application;
         loadCart();
     }

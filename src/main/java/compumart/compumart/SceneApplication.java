@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.*;
 
-public class sceneapp extends Application {
+public class SceneApplication extends Application {
 
     private Stage mainStage;
     private final Map<String, Scene> scenes = new HashMap<>();
@@ -52,10 +52,15 @@ public class sceneapp extends Application {
 
         FXMLLoader loader = new FXMLLoader(fxmlUrl);
         Scene scene = new Scene(loader.load(), width, height);
+
+        // Store the loader in the scene for later access
         scene.setUserData(loader);
 
+        // CRITICAL: Set the application reference IMMEDIATELY after loading
         Object controller = loader.getController();
-        if (controller instanceof sceneController sc) sc.setApplication(this);
+        if (controller instanceof SceneController) {
+            ((SceneController) controller).SetApplication(this);
+        }
 
         scenes.put(name, scene);
     }
@@ -63,10 +68,13 @@ public class sceneapp extends Application {
     public void switchTo(String name) {
         Scene scene = scenes.get(name);
         if (scene == null) {
+            System.err.println("Scene not found: " + name);
+            // Try to load it dynamically
             try {
                 addScene(name, name + "-view.fxml", 800, 600);
                 scene = scenes.get(name);
             } catch (IOException e) {
+                System.err.println("Failed to load scene: " + name);
                 e.printStackTrace();
                 return;
             }
@@ -76,17 +84,26 @@ public class sceneapp extends Application {
         mainStage.setTitle(capitalize(name));
         mainStage.centerOnScreen();
 
+        // Ensure controller has application reference
         Object controller = getControllerForScene(scene);
-        if (controller instanceof sceneController sc) sc.setApplication(this);
+        if (controller instanceof SceneController) {
+            ((SceneController) controller).SetApplication(this);
+        }
 
-        // Run refresh logic on the next JavaFX tick (after scene is displayed)
+        // Refresh data on scene switch
+        refreshControllerData(controller);
+    }
+
+    private void refreshControllerData(Object controller) {
         Platform.runLater(() -> {
-            if (controller instanceof cartcontroller cartController) {
-                cartController.loadCart(); // Always refresh cart display
-            } else if (controller instanceof paycontroller paymentController) {
-                paymentController.loadCartSafely();
-            } else if (controller instanceof acccontroller accountController) {
-                accountController.populateCart();
+            if (controller instanceof cartcontroller) {
+                ((cartcontroller) controller).loadCart();
+            } else if (controller instanceof paycontroller) {
+                ((paycontroller) controller).loadCartSafely();
+            } else if (controller instanceof acccontroller) {
+                ((acccontroller) controller).populateCart();
+            } else if (controller instanceof maincontroller) {
+                ((maincontroller) controller).refreshProducts();
             }
         });
     }
@@ -109,8 +126,8 @@ public class sceneapp extends Application {
 
     public Object getControllerForScene(String name) {
         Scene scene = scenes.get(name);
-        if (scene != null && scene.getUserData() instanceof FXMLLoader loader) {
-            return loader.getController();
+        if (scene != null) {
+            return getControllerForScene(scene);
         }
         return null;
     }

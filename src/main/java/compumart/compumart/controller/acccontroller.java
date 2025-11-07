@@ -1,6 +1,6 @@
 package compumart.compumart.controller;
 
-import compumart.compumart.sceneapp;
+import compumart.compumart.SceneApplication;
 import compumart.compumart.controller.maincontroller.Product;
 import compumart.compumart.utils.MongoDBConnectionManager;
 import com.mongodb.client.MongoCollection;
@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -22,7 +23,7 @@ import java.net.URL;
 import java.text.DecimalFormat;
 import java.util.ResourceBundle;
 
-public class acccontroller extends sceneController implements Initializable {
+public class acccontroller extends SceneController implements Initializable {
 
     @FXML private VBox ordersContainer;
     @FXML private VBox cartItemsContainer;
@@ -32,13 +33,13 @@ public class acccontroller extends sceneController implements Initializable {
     @FXML private Button storeButton;
     @FXML private Button logoutButton;
 
-    private sceneapp application;
+    private SceneApplication application;
     private static final String PAYMENT_DB = "Payment-Details";
 
     @Override
-    public void setApplication(sceneapp application) {
-        super.setApplication(application);
-        this.application = application;
+    public void SetApplication(Scene application) {
+        super.SetApplication(application);
+        this.app = application;
 
         // Ensure these load AFTER the app reference is set
         javafx.application.Platform.runLater(() -> {

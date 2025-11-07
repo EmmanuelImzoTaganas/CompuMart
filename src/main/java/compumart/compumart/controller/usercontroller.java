@@ -9,8 +9,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
 import org.bson.Document;
 
 import java.util.ArrayList;
@@ -18,7 +16,7 @@ import java.util.List;
 
 import static com.mongodb.client.model.Filters.eq;
 
-public class usercontroller extends sceneController {
+public class usercontroller extends SceneController {
 
     @FXML private TableView<User> usersTable;
     @FXML private TableColumn<User, String> usernameColumn;

@@ -1,6 +1,6 @@
 package compumart.compumart.controller;
 
-import compumart.compumart.sceneapp;
+import compumart.compumart.SceneApplication;
 import compumart.compumart.utils.MongoDBConnectionManager;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
@@ -12,6 +12,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
@@ -26,7 +27,7 @@ import org.bson.Document;
 import java.net.URL;
 import java.util.*;
 
-public class maincontroller extends sceneController implements Initializable {
+public class maincontroller extends SceneController implements Initializable {
 
     @FXML private ChoiceBox<String> categoryChoiceBox;
     @FXML private TextField searchBar;
@@ -34,16 +35,16 @@ public class maincontroller extends sceneController implements Initializable {
     @FXML private Button cartButton;
     @FXML private Button accountButton;
 
-    private sceneapp application;
+    private SceneApplication application;
     private static final String DATABASE_NAME = "Product-Details";
 
     private final Map<String, Image> imageCache = new HashMap<>();
     private final PauseTransition searchDelay = new PauseTransition(Duration.millis(400)); // debounce delay
 
     @Override
-    public void setApplication(sceneapp application) {
-        super.setApplication(application);
-        this.application = application;
+    public void SetApplication(Scene app) {
+        super.SetApplication(app);
+        this.app = application;
 
         // Update cart + reload stock whenever the scene is shown
         Platform.runLater(() -> {
@@ -219,11 +220,11 @@ public class maincontroller extends sceneController implements Initializable {
     }
 
     @FXML private void handleGoToCart() {
-        if (application != null) application.switchTo("cart");
+         application.switchTo("cart");
     }
 
     @FXML private void handleGoToAccount() {
-        if (application != null) application.switchTo("account");
+          application.switchTo("account");
     }
 
     //  Product class

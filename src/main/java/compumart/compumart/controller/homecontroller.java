@@ -4,7 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
-public class homecontroller extends sceneController {
+public class homecontroller extends SceneController {
 
     @FXML
     private Button exitButton;

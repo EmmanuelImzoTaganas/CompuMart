@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 
 <!-- MODIFIED: Changed dimensions to match store page -->
-<BorderPane prefHeight="700.0" prefWidth="1000.0" styleClass="root" stylesheets="@cssfiles/acc.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="bcbfixhub.bcbfixhub.controllers.AccountController">
+<BorderPane prefHeight="700.0" prefWidth="1000.0" styleClass="root" stylesheets="@cssfiles/acc.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="compumart.compumart.controller.acccontroller">
     <top>
         <!-- This nav bar is unchanged -->
         <VBox>

@@ -1,12 +1,12 @@
 package compumart.compumart.controller;
 
-import compumart.compumart.sceneapp;
+import compumart.compumart.SceneApplication;
 import javafx.fxml.FXML;
 
-public class sceneController {
-    protected sceneapp app;
+public class SceneController {
+    protected SceneApplication app;
 
-    public void setApplication(sceneapp app) {
+    public void SetApplication(SceneApplication app) {
         this.app = app;
     }
 

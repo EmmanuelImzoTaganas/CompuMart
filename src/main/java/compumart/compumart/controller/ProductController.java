@@ -12,7 +12,7 @@ import org.bson.Document;
 
 import java.util.*;
 
-public class ProductController extends sceneController {
+public class ProductController extends SceneController {
 
     @FXML private TabPane tabPane;
 
