@@ -17,7 +17,7 @@ public class RegisterController {
     private TextField registerEmailField;
     @FXML
     private PasswordField registerPasswordField;
-    @FXML
+    @FXML   
     private PasswordField registerConfirmPasswordField;
 
     private final UserDao userDao = new UserDao();
