@@ -28,12 +28,12 @@ public class LoginController {
         String password = loginPasswordField.getText().trim();
 
         if (email.isEmpty() || password.isEmpty()) {
-            showAlert(Alert.AlertType.ERROR, "Error", "Please fill in all fields.");
+            showAlert(Alert.AlertType.ERROR, "Error!", "Please fill in all fields.");
             return;
         }
         boolean authenticated = userDao.authenticate(email, password);
         if (authenticated) {
-            showAlert(Alert.AlertType.INFORMATION, "Login Successful", "Welcome back!");
+            showAlert(Alert.AlertType.INFORMATION, "Login Successful!", "Welcome back!");
 
             // Navigate to products page after successful login
             navigateToProducts();
@@ -52,11 +52,11 @@ public class LoginController {
 
             } catch (IOException e) {
                 e.printStackTrace();
-                showAlert(Alert.AlertType.ERROR, "Error", "Unable to load main user view.");
+                showAlert(Alert.AlertType.ERROR, "Error!", "Unable to load main user view.");
             }
 
         } else {
-            showAlert(Alert.AlertType.ERROR, "Login Failed.", "Invalid email or password.");
+            showAlert(Alert.AlertType.ERROR, "Login Failed.", "Invalid email or password! ");
             loginPasswordField.clear();
         }
     }
@@ -64,7 +64,7 @@ public class LoginController {
     @FXML
     private void onRegisterButton() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/compumart/compumart/register.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/compumart/compumart/register-view.fxml"));
             Parent root = loader.load();
 
             Stage stage = (Stage) loginEmailField.getScene().getWindow();
@@ -80,7 +80,7 @@ public class LoginController {
     private void navigateToProducts() {
         try {
             // Load the products FXML file - adjust the path based on your project structure
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/compumart/compumart/product.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/compumart/compumart/main-view.fxml"));
             Parent root = loader.load();
 
             // Get the current stage
@@ -94,7 +94,7 @@ public class LoginController {
 
         } catch (IOException e) {
             e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Navigation Error", "Unable to load products page.");
+            showAlert(Alert.AlertType.ERROR, "Navigation Error!", "Unable to load products page.");
         }
     }
 

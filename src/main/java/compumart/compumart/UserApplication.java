@@ -11,7 +11,7 @@ import java.util.Objects;
 public class UserApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader loader = new FXMLLoader(UserApplication.class.getResource("login.fxml")); // Scene you want to test.
+        FXMLLoader loader = new FXMLLoader(UserApplication.class.getResource("login-view.fxml")); // Scene you want to test.
         Scene scene = new Scene(loader.load());
 
         stage.setScene(scene);
