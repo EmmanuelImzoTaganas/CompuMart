@@ -4,7 +4,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<BorderPane prefHeight="700.0" prefWidth="1000.0"
+<BorderPane prefHeight="600.0" prefWidth="1000.0"
             styleClass="root"
             stylesheets="@cssfiles/main.css"
             fx:controller="compumart.compumart.controller.ProductController"
