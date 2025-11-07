@@ -10,8 +10,7 @@
 <?import javafx.scene.layout.VBox?>
 
 <BorderPane prefHeight="700.0" prefWidth="1000.0" styleClass="root" stylesheets="@cssfiles/main.css"
-            xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="compumart.compumart.controller.cartcontroller">
+            xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
 
     <top>
         <VBox>
@@ -32,7 +31,7 @@
                 </padding>
                 <children>
                     <Label styleClass="filter-bar-title" text="Your Shopping Cart"/>
-                    <Region HBox.hgrow="ALWAYS"/> <Button fx:id="backButton" mnemonicParsing="false" onAction="#handleGoBack"
+                    <Region HBox.hgrow="ALWAYS"/> <Button fx:id="backButton" mnemonicParsing="false"
                                                           styleClass="cart-button" text="Back to Store"/>
                 </children>
             </HBox>
@@ -93,7 +92,7 @@
                                     </children>
                                 </HBox>
                                 <Button fx:id="checkoutButton" maxWidth="Infinity" mnemonicParsing="false"
-                                        onAction="#handleCheckout" styleClass="checkout-button"
+                                        styleClass="checkout-button"
                                         text="Proceed to Checkout"/> </children>
                         </VBox>
                     </children>

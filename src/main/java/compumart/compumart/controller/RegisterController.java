@@ -1,80 +1,157 @@
 package compumart.compumart.controller;
 
+import compumart.compumart.model.User;
+import compumart.compumart.repositories.BaseRepository;
+import compumart.compumart.repositories.UserRepository;
+import compumart.compumart.utils.PasswordHasher;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
-import java.io.IOException;
+import net.synedra.validatorfx.Validator;
+import java.time.ZoneId;
+import java.util.Date;
 
-public class RegisterController {
+public class RegisterController extends BaseController {
+    private BaseRepository<User> userRepository;
 
-    @FXML
-    private TextField registerEmailField;
-    @FXML
-    private PasswordField registerPasswordField;
-    @FXML   
-    private PasswordField registerConfirmPasswordField;
+    @FXML private TextField fNameField;
+    @FXML private TextField lNameField; // fixed name
+    @FXML private TextField emailField;
+    @FXML private PasswordField passwordField;
+    @FXML private PasswordField confirmPasswordField;
+    @FXML private TextField phoneField;
+    @FXML private TextArea addressField;
 
-    private final UserDAO userDao = new UserDAO();
+    private Validator validator;
 
-    @FXML
-    private void handleRegister() {
-        String email = registerEmailField.getText().trim();
-        String password = registerPasswordField.getText().trim();
-        String confirm = registerConfirmPasswordField.getText().trim();
+    public void initialize() {
+        this.userRepository = new UserRepository();
+        this.validator = new Validator();
 
-        if (email.isEmpty() || password.isEmpty() || confirm.isEmpty()) {
-            showAlert(Alert.AlertType.ERROR, "Error", "Please fill in all fields.");
-            return;
-        }
+        validator.createCheck()
+                .dependsOn("firstName", fNameField.textProperty())
+                .withMethod(c -> {
+                    String v = c.get("firstName");
+                    if (v == null || v.trim().isEmpty()) {
+                        c.error("First name is required.");
+                    }
+                })
+                .decorates(fNameField)
+                .immediate();
 
-        if (!password.equals(confirm)) {
-            showAlert(Alert.AlertType.ERROR, "Error", "Passwords do not match.");
-            registerConfirmPasswordField.clear();
-            return;
-        }
+        validator.createCheck()
+                .dependsOn("lastName", lNameField.textProperty()) // fixed here
+                .withMethod(c -> {
+                    String v = c.get("lastName");
+                    if (v == null || v.trim().isEmpty()) {
+                        c.error("Last name is required.");
+                    }
+                })
+                .decorates(lNameField) // fixed here
+                .immediate();
 
-        boolean success = userDao.createUser(email, email, password, ""); // username = email, phone empty
-        if (success) {
-            showAlert(Alert.AlertType.INFORMATION, "Success!", "Registration successful! You can now log in.");
-            registerEmailField.clear();
-            registerPasswordField.clear();
-            registerConfirmPasswordField.clear();
-        } else {
-            showAlert(Alert.AlertType.ERROR, "Error!", "Email already exists. Please use another one.");
-        }
+        validator.createCheck()
+                .dependsOn("email", emailField.textProperty())
+                .withMethod(c -> {
+                    String v = c.get("email");
+                    if (v == null || v.trim().isEmpty()) {
+                        c.error("Email is required.");
+                    } else if (!v.matches("\\S+@\\S+\\.\\S+")) {
+                        c.error("Email format is invalid.");
+                    }
+                })
+                .decorates(emailField)
+                .immediate();
+
+        validator.createCheck()
+                .dependsOn("password", passwordField.textProperty())
+                .withMethod(c -> {
+                    String v = c.get("password");
+                    if (v == null || v.isEmpty()) {
+                        c.error("Password is required.");
+                    }
+                })
+                .decorates(passwordField)
+                .immediate();
+
+        validator.createCheck()
+                .dependsOn("confirmPassword", confirmPasswordField.textProperty())
+                .dependsOn("password", passwordField.textProperty())
+                .withMethod(c -> {
+                    String pw = c.get("password");
+                    String cpw = c.get("confirmPassword");
+                    if (cpw == null || !cpw.equals(pw)) {
+                        c.error("Passwords must match.");
+                    }
+                })
+                .decorates(confirmPasswordField)
+                .immediate();
+
+        validator.createCheck()
+                .dependsOn("phone", phoneField.textProperty())
+                .withMethod(c -> {
+                    String v = c.get("phone");
+                    if (v == null || v.trim().isEmpty()) {
+                        c.error("Phone number is required.");
+                    } else if (!v.matches("\\d+")) {
+                        c.error("Phone number must contain only digits.");
+                    }
+                })
+                .decorates(phoneField)
+                .immediate();
+
+        validator.createCheck()
+                .dependsOn("address", addressField.textProperty())
+                .withMethod(c -> {
+                    String v = c.get("address");
+                    if (v == null || v.trim().isEmpty()) {
+                        c.error("Address is required.");
+                    }
+                })
+                .decorates(addressField)
+                .immediate();
     }
 
     @FXML
-    private void onloginpage() {
-        try {
-            // Load the login FXML file
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/compumart/compumart/login-view.fxml"));
-            Parent root = loader.load();
-
-            // Get the current stage
-            Stage stage = (Stage) registerEmailField.getScene().getWindow();
-
-            // Set the new scene
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
-            stage.show();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Navigation Error!", "Unable to load login page.");
+    protected void onRegisterUser() {
+        validator.validate();
+        if (validator.containsErrors()) {
+            return;
         }
+
+        String hashedPassword = PasswordHasher.hashPassword(passwordField.getText());
+
+        User user = new User();
+        user.setfName(fNameField.getText());
+        user.setlName(lNameField.getText());
+        user.setEmail(emailField.getText());
+        user.setPassword(hashedPassword);
+        user.setPhone(phoneField.getText());
+        user.setAddress(addressField.getText());
+        user.setRole("user"); // default role for new registrations
+        user.setCreatedAt(Date.from(java.time.LocalDateTime.now()
+                .atZone(ZoneId.systemDefault())
+                .toInstant()));
+
+        userRepository.insert(user);
+        clearAllFields();
+        app.switchTo("login");
     }
 
-    private void showAlert(Alert.AlertType type, String title, String message) {
-        Alert alert = new Alert(type);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
+    @FXML
+    protected void onCancel() {
+        clearAllFields();
+        app.switchTo("login");
+    }
+
+    private void clearAllFields() {
+        fNameField.clear();
+        lNameField.clear();
+        emailField.clear();
+        passwordField.clear();
+        confirmPasswordField.clear();
+        phoneField.clear();
+        addressField.clear();
     }
 }

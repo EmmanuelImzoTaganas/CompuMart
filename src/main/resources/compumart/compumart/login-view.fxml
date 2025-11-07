@@ -2,32 +2,47 @@
 
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
 
-<StackPane style="-fx-background-color: linear-gradient(to bottom right, #667eea, #764ba2);" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="compumart.compumart.controller.LoginController">
+<VBox alignment="CENTER" spacing="20"
+      style="-fx-background-color: white; -fx-padding: 40; -fx-background-radius: 15;"
+      xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="compumart.compumart.controller.LoginController">
 
-    <VBox alignment="CENTER" spacing="20" style="-fx-background-color: white; -fx-padding: 40; -fx-background-radius: 15;">
-        <Label prefHeight="46.0" prefWidth="266.0" style="-fx-font-size: 24; -fx-font-weight: bold;" text="🖥️ CompuMart Login" />
+    <Label prefHeight="46.0" prefWidth="266.0"
+           style="-fx-font-size: 24; -fx-font-weight: bold;"
+           text="🖥️ CompuMart Login" />
 
-        <GridPane alignment="CENTER" vgap="15">
-            <Label text="Email:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-            <TextField fx:id="loginEmailField" promptText="Enter your email" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+    <GridPane alignment="CENTER" vgap="15">
+        <Label text="Email:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+        <TextField fx:id="loginEmailField" promptText="Enter your email"
+                   GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
-            <Label text="Password:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-            <PasswordField fx:id="loginPasswordField" promptText="Enter your password" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+        <Label text="Password:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+        <PasswordField fx:id="loginPasswordField" promptText="Enter your password"
+                       GridPane.columnIndex="1" GridPane.rowIndex="1" />
 
-            <HBox alignment="CENTER" spacing="10" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="2">
-                <Button onAction="#handleLogin" style="-fx-background-color: #667eea; -fx-text-fill: white; -fx-pref-width: 150;" text="Login" />
-                <Button onAction="#onRegisterButton" style="-fx-background-color: #667eea; -fx-text-fill: white; -fx-pref-width: 150;" text="Register" />
-            </HBox>
-         <columnConstraints>
+        <!-- Buttons -->
+        <HBox alignment="CENTER" spacing="10"
+              GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="2">
+            <Button text="Login"
+                    onAction="#onLoginHandle"
+                    style="-fx-background-color: #667eea; -fx-text-fill: white; -fx-pref-width: 100;" />
+
+            <Button text="Register"
+                    onAction="#goToRegister"
+                    style="-fx-background-color: #764ba2; -fx-text-fill: white; -fx-pref-width: 100;" />
+        </HBox>
+
+        <columnConstraints>
             <ColumnConstraints maxWidth="60.8" minWidth="57.8" prefWidth="60.8" />
-            <ColumnConstraints maxWidth="252.60000000000002" minWidth="249.60000000000002" prefWidth="249.60000000000002" />
-         </columnConstraints>
-         <rowConstraints>
+            <ColumnConstraints maxWidth="252.6" minWidth="249.6" prefWidth="249.6" />
+        </columnConstraints>
+
+        <rowConstraints>
             <RowConstraints />
             <RowConstraints />
             <RowConstraints />
-         </rowConstraints>
-        </GridPane>
-    </VBox>
-</StackPane>
+        </rowConstraints>
+    </GridPane>
+</VBox>
