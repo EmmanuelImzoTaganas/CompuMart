@@ -27,13 +27,14 @@ tasks.withType<JavaCompile> {
 
 application {
     mainModule.set("compumart.compumart")
-    mainClass.set("compumart.compumart.HelloApplication")
+    mainClass.set("compumart.compumart.CompuMartApplication")
 }
 
 javafx {
-    version = "21.0.6"
+    version = "21.0.6" // matches your SDK if running standalone
     modules = listOf("javafx.controls", "javafx.fxml")
 }
+
 
 dependencies {
     implementation("org.controlsfx:controlsfx:11.2.1")
@@ -47,6 +48,9 @@ dependencies {
     implementation("org.mongodb:mongodb-driver-sync")
     implementation("org.slf4j:slf4j-simple:2.0.12")
     implementation("org.xerial:sqlite-jdbc:3.42.0.0")
+    implementation("net.synedra:validatorfx:0.6.1")
+
+    implementation("org.mindrot:jbcrypt:0.4")
 }
 
 tasks.withType<Test> {
@@ -60,3 +64,4 @@ jlink {
         name = "app"
     }
 }
+

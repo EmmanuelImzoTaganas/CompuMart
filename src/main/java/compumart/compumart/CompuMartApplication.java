@@ -5,6 +5,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
@@ -19,27 +20,33 @@ public class CompuMartApplication extends Application {
     public void start(Stage primaryStage) throws Exception {
         this.mainStage = primaryStage;
 
-        // Example usage: preload scenes
-        setScene("login", "login-view.fxml");
-        setScene("register", "registerview.fxml");
+        // Load all your scenes once
+        loadScene("login", "login-view.fxml");
+        loadScene("register", "register-view.fxml"); // fixed typo
 
-        // Start on login
+        // Show login first
         switchTo("login");
+        mainStage.setTitle("CompuMart");
+        mainStage.centerOnScreen();
         mainStage.show();
     }
 
-    private void setScene(String name, String fxml) throws IOException {
-        URL fxmlUrl = getClass().getResource("/compumart/compumart/" + fxml);
-        if (fxmlUrl == null) fxmlUrl = getClass().getResource("/" + fxml);
-        if (fxmlUrl == null) throw new IOException("FXML not found: " + fxml);
+    private void loadScene(String name, String fxmlFile) throws IOException {
+        URL fxmlUrl = getClass().getResource("/compumart/compumart/" + fxmlFile);
+        if (fxmlUrl == null) {
+            fxmlUrl = getClass().getResource("/" + fxmlFile);
+        }
+        if (fxmlUrl == null) {
+            throw new IOException("FXML not found: " + fxmlFile);
+        }
 
         FXMLLoader loader = new FXMLLoader(fxmlUrl);
         Scene scene = new Scene(loader.load());
 
-        // Give controller access to the app instance
-        BaseController controller = loader.getController();
-        if (controller != null) {
-            controller.setApp(this);
+        // Inject the app reference into controller
+        Object controller = loader.getController();
+        if (controller instanceof BaseController baseController) {
+            baseController.setApp(this);
         }
 
         scenes.put(name, scene);

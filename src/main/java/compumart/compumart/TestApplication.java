@@ -9,7 +9,7 @@ import javafx.stage.Stage;
 public class TestApplication extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(TestApplication.class.getResource("login.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(TestApplication.class.getResource("register-view.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("TEST FXML");
         stage.setScene(scene);
