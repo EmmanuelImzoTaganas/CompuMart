@@ -1,6 +1,5 @@
 package compumart.compumart.controller;
 
-import compumart.compumart.model.User;
 import compumart.compumart.model.UserDao;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -55,7 +54,7 @@ public class RegisterController {
     private void onloginpage() {
         try {
             // Load the login FXML file
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/compumart/compumart/login.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/compumart/compumart/login-view.fxml"));
             Parent root = loader.load();
 
             // Get the current stage

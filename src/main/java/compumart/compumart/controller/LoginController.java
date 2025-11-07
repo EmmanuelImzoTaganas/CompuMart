@@ -64,7 +64,7 @@ public class LoginController {
     @FXML
     private void onRegisterButton() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/compumart/compumart/register.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/compumart/compumart/register-view.fxml"));
             Parent root = loader.load();
 
             Stage stage = (Stage) loginEmailField.getScene().getWindow();
@@ -80,7 +80,7 @@ public class LoginController {
     private void navigateToProducts() {
         try {
             // Load the products FXML file - adjust the path based on your project structure
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/compumart/compumart/product.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/compumart/compumart/main-view.fxml"));
             Parent root = loader.load();
 
             // Get the current stage
