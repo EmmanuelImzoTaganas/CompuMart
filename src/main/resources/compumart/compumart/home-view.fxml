@@ -11,7 +11,6 @@
 
 <StackPane xmlns="http://javafx.com/javafx/21"
            xmlns:fx="http://javafx.com/fxml/1"
-           fx:controller="compumart.compumart.controller.homecontroller"
            prefHeight="600.0" prefWidth="500.0"
            style="-fx-background-color: linear-gradient(to bottom right, #667eea, #764ba2);">
 
@@ -19,21 +18,21 @@
           style="-fx-background-color: white; -fx-padding: 50; -fx-background-radius: 15; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);">
 
         <children>
-            <ImageView fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true"> [cite: 2]
+            <ImageView fitHeight="250.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true">
                 <image>
-                    <Image url="@/images/logo.jpg" />
+                    <Image url="@/compumart/compumart/images/logo.png" />
                 </image>
-            </ImageView> [cite: 3]
+            </ImageView>
 
             <Label style="-fx-font-size: 32; -fx-font-weight: bold; -fx-text-fill: #444;" text="BCB FixHub" />
 
             <VBox spacing="15" alignment="CENTER">
                 <children>
-                    <Button onAction="#onLogin" text="Login"
+                    <Button text="Login"
                             style="-fx-background-color: #667eea; -fx-text-fill: white; -fx-pref-width: 220; -fx-font-size: 14; -fx-font-weight: bold;"/>
-                    <Button onAction="#onRegister" text="Register"
+                    <Button text="Register"
                             style="-fx-background-color: #764ba2; -fx-text-fill: white; -fx-pref-width: 220; -fx-font-size: 14; -fx-font-weight: bold;"/>
-                    <Button fx:id="exitButton" onAction="#onExit" text="Exit"
+                    <Button fx:id="exitButton" text="Exit"
                             style="-fx-background-color: #f4f4f4; -fx-text-fill: #333; -fx-pref-width: 220; -fx-font-size: 14; -fx-border-color: #ccc; -fx-border-radius: 3;"/>
                 </children>
             </VBox>

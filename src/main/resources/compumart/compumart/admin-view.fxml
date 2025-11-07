@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane prefHeight="700.0" prefWidth="1000.0" styleClass="root"
+            fx:controller="compumart.compumart.controller.AdminController"
+            xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1">
+
+    <top>
+        <VBox>
+            <HBox alignment="CENTER_LEFT" spacing="10.0" styleClass="nav-bar">
+                <padding>
+                    <Insets bottom="10.0" left="30.0" right="30.0" top="10.0" />
+                </padding>
+                <children>
+                    <Label prefHeight="37.0" prefWidth="135.0" styleClass="store-title" text="COMPUMART ADMIN" />
+                    <HBox HBox.hgrow="ALWAYS" />
+                    <Button mnemonicParsing="false" onAction="#onProducts" styleClass="nav-button" text="Manage Products" />
+                    <Button mnemonicParsing="false" styleClass="nav-button" text="View Orders" />
+                    <Button mnemonicParsing="false" styleClass="nav-button" text="Manage Users" />
+                </children>
+            </HBox>
+
+            <HBox alignment="CENTER_LEFT" spacing="20.0" styleClass="filter-bar">
+                <padding>
+                    <Insets bottom="15.0" left="30.0" right="30.0" top="15.0" />
+                </padding>
+                <children>
+                    <Label styleClass="filter-bar-title" text="Admin Dashboard" />
+                    <Region HBox.hgrow="ALWAYS" /> <Button mnemonicParsing="false" onAction="#onLogOut"
+                                                           styleClass="cart-button" text="Log Out" />
+                </children>
+            </HBox>
+
+        </VBox>
+    </top>
+
+    <center>
+        <ScrollPane fitToWidth="true" hbarPolicy="NEVER" style="-fx-background-color: #f4f4f4;">
+            <content>
+                <HBox alignment="TOP_CENTER">
+                    <padding>
+                        <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
+                    </padding>
+                    <children>
+                        <VBox alignment="CENTER" maxWidth="600" spacing="15.0" style="-fx-background-color: #fcf6e8; -fx-background-radius: 12; -fx-padding: 50; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);">
+                            <children>
+                                <Label style="-fx-font-size: 28px; -fx-font-weight: bold;" text="Welcome, Admin!" />
+                                <Label style="-fx-font-size: 16px; -fx-text-fill: #555; -fx-wrap-text: true; -fx-text-alignment: center;" text="Please use the navigation bar above to manage products, users, and orders." />
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+            </content>
+        </ScrollPane>
+    </center>
+</BorderPane>

@@ -22,8 +22,10 @@ public class UserRepository extends BaseRepository<User> {
         user.setPhone(document.getString("phone"));
         user.setAddress(document.getString("address"));
         user.setCreatedAt(document.getDate("createdAt"));
+        user.setRole(document.getString("role"));
         return user;
     }
+
 
     public User findByEmail(String email) {
         Document document = this.collection.find(eq("email", email)).first();
