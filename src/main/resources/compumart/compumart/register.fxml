@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
+
+<StackPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml"
+           fx:controller="compumart.compumart.controller.RegisterController"
+           style="-fx-background-color: linear-gradient(to bottom right, #667eea, #764ba2);">
+
+    <VBox alignment="CENTER" spacing="20" style="-fx-background-color: white; -fx-padding: 40; -fx-background-radius: 15;">
+        <Label text="🖥️ CompuMart Register" style="-fx-font-size: 24; -fx-font-weight: bold;"/>
+
+        <GridPane vgap="15" alignment="CENTER">
+            <Label text="Email:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+            <TextField fx:id="registerEmailField" promptText="Enter your email" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+            <Label text="Password:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+            <PasswordField fx:id="registerPasswordField" promptText="Enter your password" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+            <Label text="Confirm Password:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+            <PasswordField fx:id="registerConfirmPasswordField" promptText="Confirm your password" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+            <HBox spacing="10" alignment="CENTER" GridPane.rowIndex="3" GridPane.columnIndex="0" GridPane.columnSpan="2">
+                <Button text="Register" onAction="#handleRegister"
+                        style="-fx-background-color: #667eea; -fx-text-fill: white; -fx-pref-width: 150;"/>
+                <Button text="Login" onAction="#onloginpage"
+                        style="-fx-background-color: #667eea; -fx-text-fill: white; -fx-pref-width: 150;"/>
+            </HBox>
+        </GridPane>
+    </VBox>
+</StackPane>
