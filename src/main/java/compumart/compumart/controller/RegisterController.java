@@ -42,12 +42,12 @@ public class RegisterController {
 
         boolean success = userDao.createUser(email, email, password, ""); // username = email, phone empty
         if (success) {
-            showAlert(Alert.AlertType.INFORMATION, "Success", "Registration successful! You can now log in.");
+            showAlert(Alert.AlertType.INFORMATION, "Success!", "Registration successful! You can now log in.");
             registerEmailField.clear();
             registerPasswordField.clear();
             registerConfirmPasswordField.clear();
         } else {
-            showAlert(Alert.AlertType.ERROR, "Error", "Email already exists. Please use another one.");
+            showAlert(Alert.AlertType.ERROR, "Error!", "Email already exists. Please use another one.");
         }
     }
 
@@ -68,7 +68,7 @@ public class RegisterController {
 
         } catch (IOException e) {
             e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Navigation Error", "Unable to load login page.");
+            showAlert(Alert.AlertType.ERROR, "Navigation Error!", "Unable to load login page.");
         }
     }
 
