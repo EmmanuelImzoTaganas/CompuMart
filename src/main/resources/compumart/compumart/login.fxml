@@ -21,7 +21,7 @@
             <HBox spacing="10" alignment="CENTER" GridPane.rowIndex="2" GridPane.columnIndex="0" GridPane.columnSpan="2">
                 <Button text="Login" onAction="#handleLogin"
                         style="-fx-background-color: #667eea; -fx-text-fill: white; -fx-pref-width: 150;"/>
-                <Button text="Register" onAction="#onregisterbutton"
+                <Button text="Register" onAction="#onRegisterButton"
                         style="-fx-background-color: #667eea; -fx-text-fill: white; -fx-pref-width: 150;"/>
             </HBox>
         </GridPane>
