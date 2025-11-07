@@ -1,6 +1,6 @@
 package compumart.compumart.controller;
 
-import compumart.compumart.model.User;
+import compumart.compumart.UserApplication;
 import compumart.compumart.model.UserDao;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,6 +10,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import javafx.event.ActionEvent;
 import java.io.IOException;
 
 public class LoginController {
@@ -22,7 +23,7 @@ public class LoginController {
     private final UserDao userDao = new UserDao();
 
     @FXML
-    private void handleLogin() {
+    private void handleLogin(ActionEvent event) {
         String email = loginEmailField.getText().trim();
         String password = loginPasswordField.getText().trim();
 
@@ -30,12 +31,26 @@ public class LoginController {
             showAlert(Alert.AlertType.ERROR, "Error", "Please fill in all fields.");
             return;
         }
-
         boolean authenticated = userDao.authenticate(email, password);
         if (authenticated) {
             showAlert(Alert.AlertType.INFORMATION, "Login Successful", "Welcome back!");
             loginEmailField.clear();
             loginPasswordField.clear();
+
+            try {
+                FXMLLoader loader = new FXMLLoader(UserApplication.class.getResource("/compumart/compumart/main-user-view.fxml"));
+                Parent root = loader.load();
+
+                // ✅ Get the stage from the current window
+                Stage stage = (Stage) loginEmailField.getScene().getWindow();
+                stage.setScene(new Scene(root));
+                stage.show();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                showAlert(Alert.AlertType.ERROR, "Error", "Unable to load main user view.");
+            }
+
         } else {
             showAlert(Alert.AlertType.ERROR, "Login Failed", "Invalid email or password.");
             loginPasswordField.clear();
@@ -43,18 +58,13 @@ public class LoginController {
     }
 
     @FXML
-    private void onregisterbutton() {
+    private void onRegisterButton() {
         try {
-            // Load the register FXML file
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/compumart/compumart/register.fxml"));
             Parent root = loader.load();
 
-            // Get the current stage
             Stage stage = (Stage) loginEmailField.getScene().getWindow();
-
-            // Set the new scene
-            Scene scene = new Scene(root);
-            stage.setScene(scene);
+            stage.setScene(new Scene(root));
             stage.show();
 
         } catch (IOException e) {
