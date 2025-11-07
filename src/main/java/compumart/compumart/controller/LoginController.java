@@ -32,7 +32,7 @@ public class LoginController {
         String password = loginPasswordField.getText().trim();
 
         if (email.isEmpty() || password.isEmpty()) {
-            showAlert(Alert.AlertType.ERROR, "Error", "Please fill in all fields.");
+            showAlert(Alert.AlertType.ERROR, "Error!", "Please fill in all fields.");
             return;
         }
 
@@ -51,7 +51,7 @@ public class LoginController {
         // Regular user authentication
         boolean authenticated = userDao.authenticate(email, password);
         if (authenticated) {
-            showAlert(Alert.AlertType.INFORMATION, "Login Successful", "Welcome back!");
+            showAlert(Alert.AlertType.INFORMATION, "Login Successful!", "Welcome back!");
 
             // Navigate to regular user products page
             navigateToProducts();
@@ -60,7 +60,7 @@ public class LoginController {
             loginPasswordField.clear();
 
         } else {
-            showAlert(Alert.AlertType.ERROR, "Login Failed.", "Invalid email or password.");
+            showAlert(Alert.AlertType.ERROR, "Login Failed.", "Invalid email or password! ");
             loginPasswordField.clear();
         }
     }
@@ -103,7 +103,7 @@ public class LoginController {
 
         } catch (IOException e) {
             e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Navigation Error", "Unable to load products page.");
+            showAlert(Alert.AlertType.ERROR, "Navigation Error!", "Unable to load products page.");
         }
     }
 
