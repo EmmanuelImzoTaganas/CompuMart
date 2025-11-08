@@ -5,6 +5,7 @@ import compumart.compumart.repositories.BaseRepository;
 import compumart.compumart.repositories.UserRepository;
 import compumart.compumart.utils.PasswordHasher;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -135,6 +136,11 @@ public class RegisterController extends BaseController {
                 .toInstant()));
 
         userRepository.insert(user);
+
+        // Use BaseController helper
+        showAlert(Alert.AlertType.INFORMATION, "Registration Successful",
+                "Your account has been created successfully!");
+
         clearAllFields();
         app.switchTo("login");
     }

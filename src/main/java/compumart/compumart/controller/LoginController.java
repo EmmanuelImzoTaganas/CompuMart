@@ -58,11 +58,15 @@ public class LoginController extends BaseController {
                 "Welcome " + user.getfName() + " " + user.getlName() +
                         (role.equalsIgnoreCase("admin") ? " (Admin)" : "") + "!");
 
+
+        app.setLoggedInUser(user);
+        setCurrentUser(user);
         if ("admin".equalsIgnoreCase(role)) {
             app.switchTo("admin");
         } else {
             app.switchTo("main");
         }
+
 
         System.out.println("Logging in user: " + user.getEmail() + ", role: " + user.getRole());
     }

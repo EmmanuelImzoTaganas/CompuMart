@@ -25,7 +25,7 @@
                     <Button text="Products" styleClass="nav-button-selected"/>
                     <Button text="Users" styleClass="nav-button"/>
                     <Button text="Orders" styleClass="nav-button"/>
-                    <Button fx:id="logoutButton" text="Logout" styleClass="nav-button"/>
+                    <Button fx:id="logoutButton" onAction="#onLogOut" text="Logout" styleClass="nav-button"/>
                 </children>
             </HBox>
 
@@ -179,39 +179,8 @@
                         </content>
                     </Tab>
 
-                    <!-- Monitor Tab -->
-                    <Tab text="Monitor">
-                        <content>
-                            <VBox spacing="10">
-                                <TableView fx:id="tableMonitor" prefHeight="200">
-                                    <columns>
-                                        <TableColumn fx:id="stockMonitorColumn" text="Stock"/>
-                                        <TableColumn fx:id="brandMonitorColumn" text="Brand"/>
-                                        <TableColumn fx:id="modelMonitorColumn" text="Model"/>
-                                        <TableColumn fx:id="priceMonitorColumn" text="Price(PHP)"/>
-                                        <TableColumn fx:id="imageMonitorColumn" text="Image"/>
-                                    </columns>
-                                    <columnResizePolicy>
-                                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
-                                    </columnResizePolicy>
-                                </TableView>
-
-                                <HBox spacing="10" alignment="CENTER_LEFT">
-                                    <TextField fx:id="stockMonitor" promptText="Stock" prefWidth="60"/>
-                                    <TextField fx:id="brandMonitor" promptText="Brand" prefWidth="100"/>
-                                    <TextField fx:id="modelMonitor" promptText="Model" prefWidth="150"/>
-                                    <TextField fx:id="priceMonitor" promptText="Price" prefWidth="80"/>
-                                    <TextField fx:id="imageMonitor" promptText="Image" prefWidth="150"/>
-                                    <Region HBox.hgrow="ALWAYS"/>
-                                    <Button fx:id="addMonitor" text="Add" onAction="#addProduct"/>
-                                    <Button fx:id="editMonitor" text="Edit" onAction="#editProduct"/>
-                                    <Button fx:id="deleteMonitor" text="Delete" onAction="#deleteProduct"/>
-                                </HBox>
-                            </VBox>
-                        </content>
-                    </Tab>
-
                 </TabPane>
+
             </content>
         </ScrollPane>
     </center>

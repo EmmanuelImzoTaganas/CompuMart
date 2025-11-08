@@ -47,19 +47,11 @@ public class ProductController extends BaseController {
     @FXML private TableColumn<Product, Double> priceMemoryColumn;
     @FXML private TableColumn<Product, String> imageMemoryColumn;
 
-    @FXML private TableView<Product> tableMonitor;
-    @FXML private TableColumn<Product, Integer> stockMonitorColumn;
-    @FXML private TableColumn<Product, String> brandMonitorColumn;
-    @FXML private TableColumn<Product, String> modelMonitorColumn;
-    @FXML private TableColumn<Product, Double> priceMonitorColumn;
-    @FXML private TableColumn<Product, String> imageMonitorColumn;
-
     // Input fields
     @FXML private TextField stockKeyboard, brandKeyboard, modelKeyboard, priceKeyboard, imageKeyboard;
     @FXML private TextField stockMouse, brandMouse, modelMouse, priceMouse, imageMouse;
     @FXML private TextField stockStorage, brandStorage, modelStorage, priceStorage, imageStorage;
     @FXML private TextField stockMemory, brandMemory, modelMemory, priceMemory, imageMemory;
-    @FXML private TextField stockMonitor, brandMonitor, modelMonitor, priceMonitor, imageMonitor;
 
     // Maps
     private final Map<String, TableView<Product>> tables = new HashMap<>();
@@ -73,21 +65,18 @@ public class ProductController extends BaseController {
         lists.put("mouse", FXCollections.observableArrayList());
         lists.put("storage", FXCollections.observableArrayList());
         lists.put("memory", FXCollections.observableArrayList());
-        lists.put("monitor", FXCollections.observableArrayList());
 
         // Link tables
         tables.put("keyboard", tableKeyboard);
         tables.put("mouse", tableMouse);
         tables.put("storage", tableStorage);
         tables.put("memory", tableMemory);
-        tables.put("monitor", tableMonitor);
 
         // Link input fields
         inputs.put("keyboard", new TextField[]{stockKeyboard, brandKeyboard, modelKeyboard, priceKeyboard, imageKeyboard});
         inputs.put("mouse", new TextField[]{stockMouse, brandMouse, modelMouse, priceMouse, imageMouse});
         inputs.put("storage", new TextField[]{stockStorage, brandStorage, modelStorage, priceStorage, imageStorage});
         inputs.put("memory", new TextField[]{stockMemory, brandMemory, modelMemory, priceMemory, imageMemory});
-        inputs.put("monitor", new TextField[]{stockMonitor, brandMonitor, modelMonitor, priceMonitor, imageMonitor});
 
         // Bind table columns
         bindColumns();
@@ -97,10 +86,12 @@ public class ProductController extends BaseController {
         tableMouse.setItems(lists.get("mouse"));
         tableStorage.setItems(lists.get("storage"));
         tableMemory.setItems(lists.get("memory"));
-        tableMonitor.setItems(lists.get("monitor"));
 
         // Load products
         loadAllProducts();
+
+        // Attach selection listeners for tables
+        setupSelectionListeners();
     }
 
     private void bindColumns() {
@@ -131,13 +122,6 @@ public class ProductController extends BaseController {
         modelMemoryColumn.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getModel()));
         priceMemoryColumn.setCellValueFactory(c -> new SimpleDoubleProperty(c.getValue().getPrice()).asObject());
         imageMemoryColumn.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getImage()));
-
-        // Monitor
-        stockMonitorColumn.setCellValueFactory(c -> new SimpleIntegerProperty(c.getValue().getStock()).asObject());
-        brandMonitorColumn.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getName()));
-        modelMonitorColumn.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getModel()));
-        priceMonitorColumn.setCellValueFactory(c -> new SimpleDoubleProperty(c.getValue().getPrice()).asObject());
-        imageMonitorColumn.setCellValueFactory(c -> new SimpleStringProperty(c.getValue().getImage()));
     }
 
     private void loadAllProducts() {
@@ -233,7 +217,7 @@ public class ProductController extends BaseController {
             return;
         }
 
-        productRepository.deactivateProduct(selected.getSku());
+        productRepository.deactivateProductBySKU(selected.getSku());
         lists.get(type).remove(selected);
         showAlert(Alert.AlertType.INFORMATION, "Success", "Product deactivated successfully.");
     }
@@ -249,12 +233,34 @@ public class ProductController extends BaseController {
         if (id.contains("Mouse")) return "mouse";
         if (id.contains("Storage")) return "storage";
         if (id.contains("Memory")) return "memory";
-        if (id.contains("Monitor")) return "monitor";
         return null;
+    }
+
+    private void setupSelectionListeners() {
+        for (Map.Entry<String, TableView<Product>> entry : tables.entrySet()) {
+            String type = entry.getKey();
+            TableView<Product> table = entry.getValue();
+            TextField[] fields = inputs.get(type);
+
+            table.getSelectionModel().selectedItemProperty().addListener((obs, oldSelection, newSelection) -> {
+                if (newSelection != null) {
+                    fields[0].setText(String.valueOf(newSelection.getStock()));
+                    fields[1].setText(newSelection.getName());
+                    fields[2].setText(newSelection.getModel());
+                    fields[3].setText(String.valueOf(newSelection.getPrice()));
+                    fields[4].setText(newSelection.getImage());
+                }
+            });
+        }
     }
 
     @FXML
     public void toDashboard() {
         app.switchTo("admin");
+    }
+
+    @FXML
+    public void onLogOut() {
+        app.switchTo("login");
     }
 }

@@ -10,7 +10,7 @@ public class AdminSeeder {
     private final UserRepository userRepository = new UserRepository();
 
     public void seedAdmin() {
-        String adminEmail = "admin@compumart.com";
+        String adminEmail = "admin";
 
         // Check if admin already exists
         User existing = userRepository.findByEmail(adminEmail);
@@ -25,7 +25,7 @@ public class AdminSeeder {
         admin.setlName("User");
         admin.setEmail(adminEmail);
         admin.setPassword(PasswordHasher.hashPassword("1234")); // default password
-        admin.setPhone("0000000000");
+        admin.setPhone("0000000001");
         admin.setAddress("Head Office");
         admin.setRole("admin");
         admin.setCreatedAt(new Date());

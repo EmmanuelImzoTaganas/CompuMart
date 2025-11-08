@@ -2,6 +2,7 @@ package compumart.compumart.repositories;
 
 import compumart.compumart.model.Product;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +31,12 @@ public class ProductRepository extends BaseRepository<Product> {
         return doc != null ? Product.fromDocument(doc) : null;
     }
 
+    public void deactivateProductBySKU(String sku) {
+        Document updateDoc = new Document("$set", new Document("isActive", false));
+        collection.updateOne(new Document("sku", sku), updateDoc);
+    }
+
+
     // Activate / Deactivate by _id
     public void deactivateProduct(String id) {
         Document updateDoc = new Document("$set", new Document("isActive", false));
@@ -53,4 +60,19 @@ public class ProductRepository extends BaseRepository<Product> {
         }
         return list;
     }
+
+    public Product findById(String id) {
+        if (id == null) return null;
+
+        ObjectId objectId;
+        try {
+            objectId = new ObjectId(id);
+        } catch (IllegalArgumentException e) {
+            return null; // invalid ObjectId string
+        }
+
+        Document doc = collection.find(new Document("_id", objectId)).first();
+        return doc != null ? Product.fromDocument(doc) : null;
+    }
+
 }
