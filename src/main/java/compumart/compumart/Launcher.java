@@ -7,3 +7,5 @@ public class Launcher {
         Application.launch(CompuMartApplication.class, args);
     }
 }
+
+// test commit
